@@ -142,16 +142,8 @@ const SwapPage: React.FC = () => {
           {isV3 ? (
             <Grid item xs={12} sm={12} md={6} lg={7}>
               <Box className='flex flex-wrap justify-between fullWidth'>
-                {token1V3 && (
-                  <Box className='swapTokenDetails'>
-                    <SwapTokenDetails token={token1V3} />
-                  </Box>
-                )}
-                {token2V3 && (
-                  <Box className='swapTokenDetails'>
-                    <SwapTokenDetails token={token2V3} />
-                  </Box>
-                )}
+                {token1V3 && <Box className='swapTokenDetails'></Box>}
+                {token2V3 && <Box className='swapTokenDetails'></Box>}
               </Box>
               {token1 && token2 && (
                 <Box className='wrapper' marginTop='32px'>

@@ -33,6 +33,9 @@
     },
     "lending": {
       "available": false
+    },
+    "migrate": {
+      "available": true
     }
   }
   

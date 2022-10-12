@@ -163,7 +163,7 @@ const App: React.FC = () => {
                     <Switch>
                       <Route exact path='/'>
                         <PageLayout>
-                          <LandingPage />
+                          <SwapPage />
                         </PageLayout>
                       </Route>
                       {showSwap && (

@@ -6,16 +6,16 @@ const addMaticToMetamask: () => void = () => {
         method: 'wallet_addEthereumChain',
         params: [
           {
-            chainId: '0x89',
-            chainName: 'Polygon Network',
-            rpcUrls: ['https://polygon-rpc.com/'],
+            chainId: '0x57A',
+            chainName: 'ZKEVM Testnet',
+            rpcUrls: ['https://public.zkevm-test.net:2083'],
             iconUrls: [
-              'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0/logo.png',
+              'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
             ],
-            blockExplorerUrls: ['https://polygonscan.com/'],
+            blockExplorerUrls: ['https://public.zkevm-test.net:8443'],
             nativeCurrency: {
-              name: 'Matic Token',
-              symbol: 'MATIC',
+              name: 'Ether',
+              symbol: 'ETH',
               decimals: 18,
             },
           },

@@ -77,10 +77,10 @@ export function getNetworkLibrary(): Web3Provider {
 }
 
 const supportedChainIds: number[] = [
-  ChainId.MATIC,
+  /**ChainId.MATIC,
   ChainId.DOGECHAIN,
   ChainId.MUMBAI,
-  ChainId.DOEGCHAIN_TESTNET,
+  ChainId.DOEGCHAIN_TESTNET,*/
   ChainId.ZKTESTNET,
 ];
 

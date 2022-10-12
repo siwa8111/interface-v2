@@ -105,10 +105,10 @@ export const GlobalConst = {
 };
 
 export const SUPPORTED_CHAINIDS = [
-  ChainId.MATIC,
+  /**ChainId.MATIC,
   ChainId.MUMBAI,
   ChainId.DOGECHAIN,
-  ChainId.DOEGCHAIN_TESTNET,
+  ChainId.DOEGCHAIN_TESTNET,*/
   ChainId.ZKTESTNET,
 ];
 export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
