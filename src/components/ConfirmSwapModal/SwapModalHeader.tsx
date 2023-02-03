@@ -1,12 +1,12 @@
 import { Currency, Fraction, Trade, TradeType } from '@uniswap/sdk';
 import React, { useMemo } from 'react';
 import { AlertTriangle } from 'react-feather';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from 'theme/components';
 import { Field } from 'state/swap/actions';
 import { DoubleCurrencyLogo } from 'components';
 import useUSDCPrice from 'utils/useUSDCPrice';
 import { computeSlippageAdjustedAmounts } from 'utils/prices';
-import { ReactComponent as ArrowDownIcon } from 'assets/images/ArrowDownIcon.svg';
+import { ArrowDown } from 'react-feather';
 import { basisPointsToPercent, formatTokenAmount } from 'utils';
 import { useTranslation } from 'react-i18next';
 import { OptimalRate, SwapSide } from '@paraswap/sdk';
@@ -55,7 +55,7 @@ const SwapModalHeader: React.FC<SwapModalHeaderProps> = ({
 
   return (
     <Box>
-      <Box mt={10} className='flex justify-center'>
+      <Box margin='80px 0 0' className='flex justify-center'>
         <DoubleCurrencyLogo
           currency0={trade ? trade.inputAmount.currency : inputCurrency}
           currency1={trade ? trade.outputAmount.currency : outputCurrency}
@@ -84,7 +84,7 @@ const SwapModalHeader: React.FC<SwapModalHeaderProps> = ({
           ).toLocaleString('us')}
           )
         </p>
-        <ArrowDownIcon />
+        <ArrowDown />
         <p>
           {optimalRate
             ? (

@@ -6,7 +6,7 @@ import {
   TransactionConfirmationModal,
   TransactionErrorContent,
 } from 'components';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from 'theme/components';
 import { ReactComponent as CloseIcon } from 'assets/images/CloseIcon.svg';
 import { useTranslation } from 'react-i18next';
 import { calculateGasMargin, formatNumber } from 'utils';
@@ -263,28 +263,28 @@ export default function IncreaseGammaLiquidityModal({
   function modalHeader() {
     return (
       <Box>
-        <Box mt={3} className='flex justify-between'>
+        <Box margin='24px 0 0' className='flex justify-between'>
           <p>{position.token0.symbol}</p>
           <Box className='flex items-center'>
             <p>{formatNumber(deposit0)}</p>
-            <Box className='flex' ml={1}>
+            <Box className='flex' margin='0 0 0 8px'>
               <CurrencyLogo size='24px' currency={position.token0} />
             </Box>
           </Box>
         </Box>
-        <Box mt={2} className='flex justify-between'>
+        <Box margin='16px 0 0' className='flex justify-between'>
           <p>{position.token1.symbol}</p>
           <Box className='flex items-center'>
             <p>{formatNumber(deposit1)}</p>
-            <Box className='flex' ml={1}>
+            <Box className='flex' margin='0 0 0 8px'>
               <CurrencyLogo size='24px' currency={position.token1} />
             </Box>
           </Box>
         </Box>
 
-        <Box mt={2}>
+        <Box margin='16px 0 0'>
           <Button
-            fullWidth
+            width='100%'
             className='gamma-liquidity-item-button'
             onClick={addGammaLiquidity}
           >
@@ -324,36 +324,41 @@ export default function IncreaseGammaLiquidityModal({
           }
         />
       )}
-      <Box padding={3}>
+      <Box padding='24px'>
         <Box className='flex justify-between'>
           <p className='weight-600'>{t('addLiquidity')}</p>
           <CloseIcon className='cursor-pointer' onClick={onClose} />
         </Box>
-        <Box mt={2} className='bg-secondary1' borderRadius={10} p={2}>
+        <Box
+          margin='16px 0 0'
+          className='bg-secondary1'
+          borderRadius='10px'
+          padding='16px'
+        >
           <Box className='flex justify-between'>
             <p>
               {t('pooled')} {position.token0.symbol}
             </p>
             <Box className='flex items-center'>
               <p>{formatNumber(position.balance0)}</p>
-              <Box className='flex' ml={1}>
+              <Box className='flex' margin='0 0 0 8px'>
                 <CurrencyLogo size='24px' currency={position.token0} />
               </Box>
             </Box>
           </Box>
-          <Box mt={2} className='flex justify-between'>
+          <Box margin='16px 0 0' className='flex justify-between'>
             <p>
               {t('pooled')} {position.token1.symbol}
             </p>
             <Box className='flex items-center'>
               <p>{formatNumber(position.balance1)}</p>
-              <Box className='flex' ml={1}>
+              <Box className='flex' margin='0 0 0 8px'>
                 <CurrencyLogo size='24px' currency={position.token1} />
               </Box>
             </Box>
           </Box>
         </Box>
-        <Box mt={2}>
+        <Box margin='16px 0 0'>
           <CurrencyInputPanel
             value={deposit0}
             onUserInput={(val) => {
@@ -374,7 +379,7 @@ export default function IncreaseGammaLiquidityModal({
             swap={false}
           />
         </Box>
-        <Box mt={2} className='v3-increase-liquidity-input'>
+        <Box margin='16px 0 0' className='v3-increase-liquidity-input'>
           <CurrencyInputPanel
             value={deposit1}
             onUserInput={(val) => {
@@ -395,12 +400,12 @@ export default function IncreaseGammaLiquidityModal({
             swap={false}
           />
         </Box>
-        <Box mt={2}>
+        <Box margin='16px 0 0'>
           <Button
             className='gamma-liquidity-item-button'
             disabled={buttonDisabled}
             onClick={() => setShowConfirm(true)}
-            fullWidth
+            width='100%'
           >
             {buttonText}
           </Button>

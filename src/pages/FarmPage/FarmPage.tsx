@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Box, useMediaQuery, useTheme, Button } from '@material-ui/core';
+import { Box } from 'theme/components';
 import { getBulkPairData } from 'state/stake/hooks';
 import { ReactComponent as HelpIcon } from 'assets/images/HelpIcon1.svg';
 import { useActiveWeb3React } from 'hooks';
@@ -18,6 +18,7 @@ import V3Farms from 'pages/FarmPage/V3';
 import { useIsV2 } from 'state/application/hooks';
 import useParsedQueryString from 'hooks/useParsedQueryString';
 import { useHistory } from 'react-router-dom';
+import { useIsXS } from 'hooks/useMediaQuery';
 
 const FarmPage: React.FC = () => {
   const { chainId } = useActiveWeb3React();
@@ -29,13 +30,12 @@ const FarmPage: React.FC = () => {
       : GlobalConst.v2FarmTab.LPFARM;
   const { t } = useTranslation();
   const [bulkPairs, setBulkPairs] = useState<any>(null);
+  const isMobile = useIsXS();
 
   const chainIdOrDefault = chainId ?? ChainId.MATIC;
   const lpFarms = useDefaultFarmList();
   const cntFarms = useDefaultCNTFarmList(chainIdOrDefault);
   const dualFarms = useDefaultDualFarmList();
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
   const OTHER_FARM_LINK = process.env.REACT_APP_OTHER_LP_CREATE_A_FARM_LINK;
 
   const pairLists = useMemo(() => {
@@ -100,11 +100,11 @@ const FarmPage: React.FC = () => {
   const { isV2 } = useIsV2();
 
   return (
-    <Box width='100%' mb={3} id='farmPage'>
+    <Box width='100%' margin='0 0 24px' id='farmPage'>
       <Box className='pageHeading'>
         <Box className='flex row items-center'>
           <h4>{t('farm')}</h4>
-          <Box ml={2}>
+          <Box margin='0 0 0 16px'>
             <VersionToggle />
           </Box>
         </Box>
@@ -150,7 +150,7 @@ const FarmPage: React.FC = () => {
           </Box>
 
           {/* Rewards */}
-          <Box my={3}>
+          <Box margin='24px 0'>
             {currentTab !== GlobalConst.v2FarmTab.OTHER_LP && (
               <FarmRewards bulkPairs={bulkPairs} />
             )}

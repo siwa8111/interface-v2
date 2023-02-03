@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from 'theme/components';
 import './CustomSelector.scss';
 
 export interface SelectorItem {
@@ -10,7 +10,7 @@ export interface SelectorItem {
 }
 
 interface CustomSelectorProps {
-  height: number;
+  height: string;
   items: SelectorItem[];
   selectedItem: SelectorItem;
   handleChange: (item: SelectorItem) => void;
@@ -27,7 +27,11 @@ const CustomSelector: React.FC<CustomSelectorProps> = ({
       {items.map((item) => (
         <>
           {item.hasSeparator && (
-            <Box mr={1} height={height} className='customSelectorSeparator' />
+            <Box
+              margin='0 8px 0 0'
+              height={height}
+              className='customSelectorSeparator'
+            />
           )}
           <Box
             key={item.id}

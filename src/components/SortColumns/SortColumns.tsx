@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
-import { ArrowDropUp, ArrowDropDown } from '@material-ui/icons';
+import { Box } from 'theme/components';
+import { ChevronUp, ChevronDown } from 'react-feather';
 import 'components/styles/SortColumns.scss';
 
 export interface SortColumn {
   text: string;
   index: string;
-  width: number;
+  width: string;
   justify?: string;
   onClick: () => void;
 }
@@ -37,7 +37,7 @@ const SortColumns: React.FC<SortColumnsProps> = ({
           >
             {item.text}
           </small>
-          <Box className='sortArrows'>
+          <Box margin='0 0 0 3px' className='sortArrows'>
             <Box
               className={
                 selectedSort === item.index && !sortDesc
@@ -45,17 +45,17 @@ const SortColumns: React.FC<SortColumnsProps> = ({
                   : ''
               }
             >
-              <ArrowDropUp />
+              <ChevronUp />
             </Box>
             <Box
-              mt='-15px'
+              margin='-10px 0 0'
               className={
                 selectedSort === item.index && sortDesc
                   ? 'selectedSortArrow'
                   : ''
               }
             >
-              <ArrowDropDown />
+              <ChevronDown />
             </Box>
           </Box>
         </Box>

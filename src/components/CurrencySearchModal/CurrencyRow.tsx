@@ -1,7 +1,8 @@
 import { CurrencyAmount, currencyEquals, ETHER, Token } from '@uniswap/sdk';
 import { NativeCurrency } from '@uniswap/sdk-core';
 import React from 'react';
-import { Box, Tooltip, CircularProgress, ListItem } from '@material-ui/core';
+import { Box } from 'theme/components';
+import Loader from 'components/Loader';
 import { useActiveWeb3React } from 'hooks';
 import { WrappedTokenInfo } from 'state/lists/hooks';
 import { useAddUserToken, useRemoveUserAddedToken } from 'state/user/hooks';
@@ -17,6 +18,7 @@ import { formatTokenAmount } from 'utils';
 import { useTranslation } from 'react-i18next';
 import { toToken } from 'constants/v3/routing';
 import { WMATIC_EXTENDED } from 'constants/v3/addresses';
+import { TooltipOnHover } from 'components/v3/Tooltip';
 
 function currencyKey(currency: Token): string {
   return currency instanceof Token
@@ -45,20 +47,20 @@ function TokenTags({ currency }: { currency: Token }) {
   const tag = tags[0];
   return (
     <Box>
-      <Tooltip title={tag.description}>
+      <TooltipOnHover text={tag.description}>
         <Box className='tag' key={tag.id}>
           {tag.name}
         </Box>
-      </Tooltip>
+      </TooltipOnHover>
       {tags.length > 1 ? (
-        <Tooltip
-          title={tags
+        <TooltipOnHover
+          text={tags
             .slice(1)
             .map(({ name, description }) => `${name}: ${description}`)
             .join('; \n')}
         >
           <Box className='tag'>...</Box>
-        </Tooltip>
+        </TooltipOnHover>
       ) : null}
     </Box>
   );
@@ -147,11 +149,11 @@ const CurrencyRow: React.FC<CurrenyRowProps> = ({
 
   // only show add or remove buttons if not on selected list
   return (
-    <ListItem
-      button
+    <Box
       style={style}
       key={key}
-      selected={otherSelected || isSelected}
+      padding='6px 8px'
+      className='cursor-pointer'
       onClick={() => {
         if (!isSelected && !otherSelected) onSelect();
       }}
@@ -159,13 +161,13 @@ const CurrencyRow: React.FC<CurrenyRowProps> = ({
       <Box className='currencyRow'>
         {(otherSelected || isSelected) && <TokenSelectedIcon />}
         <CurrencyLogo currency={currency} size='32px' />
-        <Box ml={1} height={32}>
+        <Box margin='0 0 0 8px'>
           <Box className='flex items-center'>
             <small className='currencySymbol'>{currency.symbol}</small>
             {isMetamask && currency !== ETHER && (
               <Box
-                className='cursor-pointer'
-                ml='2px'
+                className='flex cursor-pointer'
+                margin='0 0 0 2px'
                 onClick={(event: any) => {
                   addTokenToMetamask(
                     currency.address,
@@ -188,7 +190,7 @@ const CurrencyRow: React.FC<CurrenyRowProps> = ({
                 {customAdded ? t('addedByUser') : t('foundByAddress')}
               </span>
               <Box
-                ml={0.5}
+                margin='0 0 0 4px'
                 className='text-primary'
                 onClick={(event) => {
                   event.stopPropagation();
@@ -219,11 +221,11 @@ const CurrencyRow: React.FC<CurrenyRowProps> = ({
               </span>
             </>
           ) : account ? (
-            <CircularProgress size={24} color='secondary' />
+            <Loader size='24px' color='#344252' />
           ) : null}
         </Box>
       </Box>
-    </ListItem>
+    </Box>
   );
 };
 

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { Box, LinearProgress } from '@material-ui/core';
+import { Box, LinearProgress } from 'theme/components';
 import { useActiveWeb3React } from 'hooks';
 import { getEtherscanLink } from 'utils/index';
-import { ReactComponent as ArrowTopRight } from 'assets/images/ArrowTopRight.svg';
+import { ArrowUpRight } from 'react-feather';
 
 interface TransactionPopupProps {
   hash: string;
@@ -34,7 +34,7 @@ const TransactionPopup: React.FC<TransactionPopupProps> = ({
 
   return (
     <>
-      <Box mb={1.5} className='flex justify-between items-center'>
+      <Box margin='0 0 12px' className='flex justify-between items-center'>
         <small
           className={`weight-600 ${
             pending ? 'text-yellow3' : success ? 'text-success' : 'text-error'
@@ -44,11 +44,12 @@ const TransactionPopup: React.FC<TransactionPopupProps> = ({
         </small>
         {chainId && hash.length > 0 && (
           <a
+            className='text-secondary'
             href={getEtherscanLink(chainId, hash, 'transaction')}
             target='_blank'
             rel='noopener noreferrer'
           >
-            <ArrowTopRight />
+            <ArrowUpRight />
           </a>
         )}
       </Box>
@@ -57,7 +58,7 @@ const TransactionPopup: React.FC<TransactionPopupProps> = ({
       </small>
       {pending && (
         <Box className='pendingBar'>
-          <LinearProgress variant='determinate' value={progress} />
+          <LinearProgress value={progress} />
         </Box>
       )}
     </>

@@ -1,17 +1,16 @@
 import React from 'react';
-import { Box, useMediaQuery, useTheme } from '@material-ui/core';
 import Slider from 'react-slick';
 import { useDefaultAdsList } from 'state/ads/hooks';
+import { useIsXS } from 'hooks/useMediaQuery';
 
 interface AdsSliderProps {
   sort: string;
 }
 
 const AdsSlider: React.FC<AdsSliderProps> = ({ sort }) => {
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
   const adsData = useDefaultAdsList();
   const ads = adsData.data[sort];
+  const isMobile = useIsXS();
 
   const startIndex =
     ads && ads.length > 0 ? Math.floor(Math.random() * ads.length) : 0;

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box } from 'theme/components';
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components';
-import { Deposit } from '../../models/interfaces';
+import { ReactComponent as ExpandIcon } from 'assets/images/expand_circle.svg';
+import { ReactComponent as ExpandIconUp } from 'assets/images/expand_circle_up.svg';
 import { Token } from '@uniswap/sdk';
 import { useActiveWeb3React } from 'hooks';
 import { formatNumber, getTokenFromAddress } from 'utils';
@@ -12,6 +13,7 @@ import RangeBadge from 'components/v3/Badge/RangeBadge';
 import FarmStakeButtons from './FarmStakeButtons';
 import { formatReward } from 'utils/formatReward';
 import { useMaticPrice } from 'state/application/hooks';
+import { useIsXS } from 'hooks/useMediaQuery';
 
 interface FarmCardProps {
   el: any;
@@ -23,8 +25,7 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
   const { t } = useTranslation();
   const { chainId } = useActiveWeb3React();
   const { maticPrice } = useMaticPrice();
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
+  const isMobile = useIsXS();
 
   const tokenMap = useSelectedTokenList();
   const token0 =
@@ -117,7 +118,7 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
     <Box>
       <Box
         className='flex justify-between items-center flex-wrap'
-        borderRadius={10}
+        borderRadius='10px'
       >
         <Box
           className='flex items-center flex-wrap'
@@ -126,9 +127,9 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
           <Box
             className='flex items-center'
             width={isMobile ? '100%' : '50%'}
-            mb={isMobile ? 2 : 0}
+            margin={isMobile ? '0 0 16px' : '0'}
           >
-            <Box className='v3-tokenId-wrapper' mr={2}>
+            <Box className='v3-tokenId-wrapper' margin='0 8px 0 0'>
               <span>{el.id}</span>
             </Box>
             {token0 && token1 && (
@@ -139,7 +140,7 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
               />
             )}
             {token0 && token1 && (
-              <Box ml='16px'>
+              <Box margin='0 0 0 8px'>
                 <p className='small'>{`${token0.symbol} / ${token1.symbol}`}</p>
                 <a
                   className='small'
@@ -151,14 +152,14 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
                 </a>
               </Box>
             )}
-            <Box ml={2}>
+            <Box margin='0 0 0 8px'>
               <RangeBadge removed={false} inRange={!outOfRange} />
             </Box>
           </Box>
 
           <Box
             className='flex items-center justify-between'
-            mb={isMobile ? 2 : 0}
+            margin={isMobile ? '0 0 16px' : '0'}
             width={isMobile ? '100%' : '15%'}
           >
             {isMobile && <span className='text-secondary'>{t('poolAPR')}</span>}
@@ -168,7 +169,7 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
           </Box>
           <Box
             className='flex items-center justify-between'
-            mb={isMobile ? 2 : 0}
+            margin={isMobile ? '0 0 16px' : '0'}
             width={isMobile ? '100%' : '15%'}
           >
             {isMobile && <span className='text-secondary'>{t('farmAPR')}</span>}
@@ -178,7 +179,7 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
           </Box>
           <Box
             className='flex items-center justify-between'
-            mb={isMobile ? 2 : 0}
+            margin={isMobile ? '0 0 16px' : '0'}
             width={isMobile ? '100%' : '20%'}
           >
             {isMobile && (
@@ -194,7 +195,7 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
                 )}
 
                 {rewardToken && (
-                  <Box ml='6px'>
+                  <Box margin='0 0 0 6px'>
                     <p className='caption'>{`${formatReward(Number(earned))} ${
                       rewardToken.symbol
                     }`}</p>
@@ -209,7 +210,7 @@ export default function FarmCard({ el, poolApr, farmApr }: FarmCardProps) {
                 )}
 
                 {bonusRewardToken && (
-                  <Box ml='6px'>
+                  <Box margin='0 0 0 6px'>
                     <p className='caption'>{`${formatReward(
                       Number(bonusEarned),
                     )} ${bonusRewardToken.symbol}`}</p>

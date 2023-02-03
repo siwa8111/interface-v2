@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, useTheme, useMediaQuery } from '@material-ui/core';
+import { Box } from 'theme/components';
 import { useTranslation } from 'react-i18next';
 import { Token } from '@uniswap/sdk';
 import { DoubleCurrencyLogo } from 'components';
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { formatNumber } from 'utils';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import GammaFarmCardDetails from '../GammaFarmCardDetails';
+import { useIsXS } from 'hooks/useMediaQuery';
 
 const GammaFarmCard: React.FC<{
   data: any;
@@ -22,16 +23,15 @@ const GammaFarmCard: React.FC<{
       ? Object.values(rewardData['rewarders'])
       : [];
   const [showDetails, setShowDetails] = useState(false);
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
+  const isMobile = useIsXS();
 
   return (
     <Box
       width='100%'
-      borderRadius={16}
+      borderRadius='16px'
       className={`bg-secondary1${showDetails ? ' border-primary' : ''}`}
     >
-      <Box padding={1.5} className='flex items-center'>
+      <Box padding='12px' className='flex items-center'>
         <Box width='90%' className='flex items-center'>
           <Box
             width={isMobile ? (showDetails ? '100%' : '70%') : '30%'}
@@ -44,7 +44,7 @@ const GammaFarmCard: React.FC<{
                   currency1={token1}
                   size={30}
                 />
-                <Box ml='6px'>
+                <Box margin='0 0 0 6px'>
                   <small className='weight-600'>{`${token0.symbol}/${token1.symbol} (${pairData.title})`}</small>
                   <Box className='cursor-pointer'>
                     <Link
@@ -107,8 +107,8 @@ const GammaFarmCard: React.FC<{
         <Box width='10%' className='flex justify-center'>
           <Box
             className='flex items-center justify-center text-primary cursor-pointer'
-            width={20}
-            height={20}
+            width='20px'
+            height='20px'
             onClick={() => setShowDetails(!showDetails)}
           >
             {showDetails ? <ChevronUp /> : <ChevronDown />}

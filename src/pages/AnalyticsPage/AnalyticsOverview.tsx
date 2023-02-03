@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Skeleton } from 'theme/components';
 import { useHistory, useParams } from 'react-router-dom';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { ArrowForwardIos } from '@material-ui/icons';
+import { ChevronRight } from 'react-feather';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import {
@@ -47,7 +46,7 @@ const AnalyticsOverview: React.FC = () => {
 
   const dispatch = useDispatch();
   const params: any = useParams();
-  const version = params && params.version ? params.version : 'v3';
+  const version = params && params.version ? params.version : 'total';
 
   useEffect(() => {
     (async () => {
@@ -205,29 +204,29 @@ const AnalyticsOverview: React.FC = () => {
   }, [globalData, topTokens, topPairs, dispatch]);
 
   return (
-    <Box width='100%' mb={3}>
+    <Box width='100%' margin='0 0 24px'>
       <Grid container spacing={4}>
-        <Grid item xs={12} sm={12} md={6}>
-          <Box className='panel' width={1}>
+        <Grid item spacing={4} xs={12} sm={12} md={6}>
+          <Box className='panel' width='100%'>
             <AnalyticsLiquidityChart />
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={6}>
+        <Grid item spacing={4} xs={12} sm={12} md={6}>
           <Box className='analyticsVolumeChart panel'>
             <AnalyticsVolumeChart />
           </Box>
         </Grid>
       </Grid>
-      <Box mt={4}>
+      <Box margin='32px 0 0'>
         <Box className='panel flex flex-wrap'>
           {globalData ? (
             <AnalyticsInfo data={globalData} />
           ) : (
-            <Skeleton width='100%' height={20} />
+            <Skeleton width='100%' height='20px' />
           )}
         </Box>
       </Box>
-      <Box mt={4}>
+      <Box margin='32px 0 0'>
         <Box className='flex justify-between items-center'>
           <Box className='headingWrapper'>
             <p className='weight-600'>{t('topTokens')}</p>
@@ -237,11 +236,11 @@ const AnalyticsOverview: React.FC = () => {
             onClick={() => history.push(`/analytics/${version}/tokens`)}
           >
             <p className='weight-600'>{t('seeAll')}</p>
-            <ArrowForwardIos />
+            <ChevronRight />
           </Box>
         </Box>
       </Box>
-      <Box mt={3} className='panel'>
+      <Box margin='24px 0 0' className='panel'>
         {topTokens ? (
           <TokensTable
             data={topTokens
@@ -254,10 +253,10 @@ const AnalyticsOverview: React.FC = () => {
             showPagination={false}
           />
         ) : (
-          <Skeleton variant='rect' width='100%' height={150} />
+          <Skeleton variant='rect' width='100%' height='150px' />
         )}
       </Box>
-      <Box mt={4}>
+      <Box margin='32px 0 0'>
         <Box className='flex items-center justify-between'>
           <Box className='headingWrapper'>
             <p className='weight-600'>{t('topPairs')}</p>
@@ -267,11 +266,11 @@ const AnalyticsOverview: React.FC = () => {
             onClick={() => history.push(`/analytics/${version}/pairs`)}
           >
             <p className='weight-600'>{t('seeAll')}</p>
-            <ArrowForwardIos />
+            <ChevronRight />
           </Box>
         </Box>
       </Box>
-      <Box mt={3} className='panel'>
+      <Box margin='24px 0 0' className='panel'>
         {topPairs ? (
           <PairTable
             data={topPairs
@@ -288,7 +287,7 @@ const AnalyticsOverview: React.FC = () => {
             showPagination={false}
           />
         ) : (
-          <Skeleton variant='rect' width='100%' height={150} />
+          <Skeleton variant='rect' width='100%' height='150px' />
         )}
       </Box>
     </Box>

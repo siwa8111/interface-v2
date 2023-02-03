@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from 'theme/components';
 import {
   GelatoProvider,
   GelatoLimitOrderPanel,
@@ -24,7 +24,7 @@ const SwapLimitOrder: React.FC = () => {
       >
         <GelatoLimitOrderPanel />
         <GelatoLimitOrdersHistoryPanel />
-        <Box mt={2} textAlign='center'>
+        <Box margin='16px 0 0' textAlign='center'>
           <small>
             <Trans
               i18nKey='limitOrderDisclaimer'

@@ -10,7 +10,8 @@ import {
 import { Currency, CurrencyAmount } from '@uniswap/sdk-core';
 import ReactGA from 'react-ga';
 import { ArrowDown } from 'react-feather';
-import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Box, Button, LinearProgress } from 'theme/components';
+import Loader from 'components/Loader';
 import { useWalletModalToggle } from 'state/application/hooks';
 import {
   useDefaultsFromURLSearch,
@@ -22,7 +23,7 @@ import {
   useExpertModeManager,
   useUserSlippageTolerance,
 } from 'state/user/hooks';
-import { Field } from 'state/swap/actions';
+import { Field, SwapDelay } from 'state/swap/actions';
 import { useHistory } from 'react-router-dom';
 import { CurrencyInput, ConfirmSwapModal, AddressInput } from 'components';
 import { useActiveWeb3React } from 'hooks';
@@ -38,6 +39,7 @@ import {
   isSupportedNetwork,
   maxAmountSpend,
   basisPointsToPercent,
+  getContract,
 } from 'utils';
 import { ReactComponent as PriceExchangeIcon } from 'assets/images/PriceExchangeIcon.svg';
 import { ReactComponent as ExchangeIcon } from 'assets/images/ExchangeIcon.svg';
@@ -47,12 +49,19 @@ import { useParaswapCallback } from 'hooks/useParaswapCallback';
 import { getBestTradeCurrencyAddress, useParaswap } from 'hooks/useParaswap';
 import { SwapSide } from '@paraswap/sdk';
 import { BestTradeAdvancedSwapDetails } from './BestTradeAdvancedSwapDetails';
-import { GlobalValue, paraswapTax } from 'constants/index';
+import {
+  GlobalValue,
+  paraswapTax,
+  RouterTypes,
+  SmartRouter,
+} from 'constants/index';
 import { useQuery } from 'react-query';
 import { useAllTokens, useCurrency } from 'hooks/Tokens';
 import TokenWarningModal from 'components/v3/TokenWarningModal';
 import useParsedQueryString from 'hooks/useParsedQueryString';
 import useSwapRedirects from 'hooks/useSwapRedirect';
+import callWallchainAPI from 'utils/wallchainService';
+import ParaswapABI from 'constants/abis/ParaSwap_ABI.json';
 import { ONE } from 'v3lib/utils';
 
 const SwapBestTrade: React.FC<{
@@ -69,6 +78,8 @@ const SwapBestTrade: React.FC<{
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(
     false,
   );
+  const [bonusRouteFound, setBonusRouteFound] = useState(false);
+
   const urlLoadedTokens: Token[] = useMemo(
     () =>
       [loadedInputCurrency, loadedOutputCurrency]?.filter(
@@ -95,7 +106,7 @@ const SwapBestTrade: React.FC<{
     });
 
   const { t } = useTranslation();
-  const { account } = useActiveWeb3React();
+  const { account, chainId, library } = useActiveWeb3React();
   const { independentField, typedValue, recipient } = useSwapState();
   const {
     currencyBalances,
@@ -122,6 +133,8 @@ const SwapBestTrade: React.FC<{
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
+    onBestRoute,
+    onSetSwapDelay,
   } = useSwapActionHandlers();
   const { address: recipientAddress } = useENSAddress(recipient);
   const [allowedSlippage] = useUserSlippageTolerance();
@@ -237,7 +250,14 @@ const SwapBestTrade: React.FC<{
       );
 
   const fetchOptimalRate = async () => {
-    if (!srcToken || !destToken || !srcAmount) {
+    if (
+      !srcToken ||
+      !destToken ||
+      !srcAmount ||
+      !account ||
+      !chainId ||
+      !library
+    ) {
       return;
     }
     try {
@@ -258,7 +278,43 @@ const SwapBestTrade: React.FC<{
         },
       });
       setOptimalRateError('');
-      return rate;
+      try {
+        const txParams = await paraswap.buildTx({
+          srcToken: rate.srcToken,
+          destToken: rate.destToken,
+          srcAmount: rate.srcAmount,
+          destAmount: rate.destAmount,
+          priceRoute: rate,
+          userAddress: account,
+          partner: 'quickswapv3',
+        });
+
+        if (txParams.data) {
+          const paraswapContract = getContract(
+            rate.contractAddress,
+            ParaswapABI,
+            library,
+            account,
+          );
+          const response = await callWallchainAPI(
+            rate.contractMethod,
+            txParams.data,
+            txParams.value,
+            chainId,
+            account,
+            paraswapContract,
+            SmartRouter.PARASWAP,
+            RouterTypes.SMART,
+            onBestRoute,
+            onSetSwapDelay,
+            50,
+          );
+          setBonusRouteFound(response ? response.pathFound : false);
+        }
+        return rate;
+      } catch (e) {
+        return rate;
+      }
     } catch (err) {
       setOptimalRateError(err.message);
       return;
@@ -327,10 +383,17 @@ const SwapBestTrade: React.FC<{
     };
   }, [independentField, typedValue, dependentField, showWrap, parsedAmounts]);
 
+  const inputAmount = formattedAmounts[Field.INPUT];
+  const outputAmount = formattedAmounts[Field.OUTPUT];
+  useEffect(() => {
+    setBonusRouteFound(false);
+  }, [inputCurrency, outputCurrency, inputAmount, outputAmount]);
+
   const [approval, approveCallback] = useApproveCallbackFromBestTrade(
     pct,
     inputCurrency as Currency,
     optimalRate,
+    bonusRouteFound,
   );
 
   const showApproveFlow =
@@ -792,52 +855,53 @@ const SwapBestTrade: React.FC<{
           )}
         </Box>
       )}
-      <BestTradeAdvancedSwapDetails
-        optimalRate={optimalRate}
-        inputCurrency={inputCurrency}
-        outputCurrency={outputCurrency}
-      />
+      {
+        <BestTradeAdvancedSwapDetails
+          optimalRate={optimalRate}
+          inputCurrency={inputCurrency}
+          outputCurrency={outputCurrency}
+        />
+      }
       <Box className='swapButtonWrapper'>
         {showApproveFlow && (
-          <Box width='48%'>
-            <Button
-              fullWidth
-              disabled={
-                approving ||
-                approval !== ApprovalState.NOT_APPROVED ||
-                approvalSubmitted
-              }
-              onClick={async () => {
-                setApproving(true);
-                try {
-                  await approveCallback();
-                  setApproving(false);
-                } catch (err) {
-                  setApproving(false);
-                }
-              }}
-            >
-              {approval === ApprovalState.PENDING ? (
-                <Box className='content'>
-                  {t('approving')} <CircularProgress size={16} />
-                </Box>
-              ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                t('approved')
-              ) : (
-                `${t('approve')} ${currencies[Field.INPUT]?.symbol}`
-              )}
-            </Button>
-          </Box>
-        )}
-        <Box width={showApproveFlow ? '48%' : '100%'}>
           <Button
-            fullWidth
-            disabled={(optimalRateError || swapButtonDisabled) as boolean}
-            onClick={account ? onParaswap : connectWallet}
+            width='48%'
+            disabled={
+              approving ||
+              approval !== ApprovalState.NOT_APPROVED ||
+              approvalSubmitted
+            }
+            onClick={async () => {
+              setApproving(true);
+              try {
+                await approveCallback();
+                setApproving(false);
+              } catch (err) {
+                setApproving(false);
+              }
+            }}
           >
-            {swapButtonText}
+            {approval === ApprovalState.PENDING ? (
+              <Box className='flex justify-center items-center'>
+                {t('approving')}
+                <Box className='flex' margin='0 0 0 3px'>
+                  <Loader size='16px' color='white' />
+                </Box>
+              </Box>
+            ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+              t('approved')
+            ) : (
+              `${t('approve')} ${currencies[Field.INPUT]?.symbol}`
+            )}
           </Button>
-        </Box>
+        )}
+        <Button
+          width={showApproveFlow ? '48%' : '100%'}
+          disabled={(optimalRateError || swapButtonDisabled) as boolean}
+          onClick={account ? onParaswap : connectWallet}
+        >
+          {swapButtonText}
+        </Button>
       </Box>
     </Box>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Grid } from 'theme/components';
 import { EternalFarmCard } from 'components/StakerEventCard/EternalFarmCard';
 import { Frown } from 'react-feather';
 import { useTranslation } from 'react-i18next';
@@ -265,7 +265,7 @@ const EternalFarmsPage: React.FC<{
         )}
       </CustomModal>
 
-      <Box px={2} py={3}>
+      <Box padding='24px 16px'>
         {eternalFarmsLoading ? (
           <div className={'eternal-page__loader'}>
             <Loader stroke='white' size='1.5rem' />
@@ -285,7 +285,7 @@ const EternalFarmsPage: React.FC<{
           <>
             {eternalFarmsFiltered.map(
               (event: FormattedEternalFarming, j: number) => (
-                <Box mb={2} key={j}>
+                <Box margin='0 0 16px' key={j}>
                   <EternalFarmCard
                     farmHandler={() => setModalForPool(event as any)}
                     now={0}

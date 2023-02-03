@@ -1,28 +1,30 @@
 @use 'styles/variables' as *;
-@use 'styles/breakpoints' as *;
+
+.customTab {
+  min-width: 160px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: $textSecondary;
+  cursor: pointer;
+  &.selectedTab {
+    border-bottom: 2px solid $primary;
+    color: $primary;
+  }
+  & span {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 4.75;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+}
 
 .customTabWrapper {
   display: flex;
-  align-items: center;
-  & .MuiTabs-root {
-    & button {
-      min-width: unset;
-      max-width: none;
-      padding: 6px 0;
-      margin: 0 12px;
-      &.Mui-selected {
-        span {
-          color: $textPrimary;
-        }
-      }
-      & span {
-        font-size: 14px;
-        color: $textSecondary;
-        text-transform: none;
-      }
-    }
-    & .MuiTabs-indicator {
-      background-color: $textPrimary;
-    }
-  }
 }

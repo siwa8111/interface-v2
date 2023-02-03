@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Divider } from '@material-ui/core';
+import { Box, Divider, Skeleton } from 'theme/components';
 import { ButtonSwitch } from 'components';
 import dayjs, { ManipulateType } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import Skeleton from '@material-ui/lab/Skeleton';
 import { formatCompact, formatNumber } from 'utils';
 import { useTranslation } from 'react-i18next';
 dayjs.extend(utc);
@@ -43,38 +42,38 @@ const SwapInfoTx: React.FC<{
         ]}
       />
       <Box className='swapTxInfo'>
-        <Box>
+        <Box className='row'>
           <small className='text-secondary'>{t('transactions')}:</small>
           {filteredTxs ? (
             <small>{filteredTxs.length}</small>
           ) : (
-            <Skeleton width={60} height={14} />
+            <Skeleton width='60px' height='14px' />
           )}
         </Box>
         <Divider />
-        <Box>
+        <Box className='row'>
           <small className='text-secondary'>{t('buys')}:</small>
           <small>
             {filteredBuyTxs ? (
               filteredBuyTxs.length
             ) : (
-              <Skeleton width={60} height={14} />
+              <Skeleton width='60px' height='14px' />
             )}
           </small>
         </Box>
         <Divider />
-        <Box>
+        <Box className='row'>
           <small className='text-secondary'>{t('sells')}:</small>
           <small>
             {filteredSellTxs ? (
               filteredSellTxs.length
             ) : (
-              <Skeleton width={60} height={14} />
+              <Skeleton width='60px' height='14px' />
             )}
           </small>
         </Box>
         <Divider />
-        <Box>
+        <Box className='row'>
           <small className='text-secondary'>{t('volume')}:</small>
           <small>
             {filteredTxs ? (
@@ -84,7 +83,7 @@ const SwapInfoTx: React.FC<{
                 formatNumber(volume)
               )
             ) : (
-              <Skeleton width={60} height={14} />
+              <Skeleton width='60px' height='14px' />
             )}
           </small>
         </Box>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from 'theme/components';
 import { useActiveWeb3React } from 'hooks';
 import Loader from 'components/Loader';
 import { useWalletModalToggle } from 'state/application/hooks';
@@ -63,7 +63,7 @@ export default function MyLiquidityPoolsV3() {
       <p className='weight-600'>{t('myGammaLP')}</p>
       <>
         {positionsLoading ? (
-          <Box mt={2} className='flex justify-center'>
+          <Box margin='16px 0 0' className='flex justify-center'>
             <Loader stroke='white' size={'2rem'} />
           </Box>
         ) : gammaPositions && gammaPositionList.length > 0 ? (
@@ -72,11 +72,11 @@ export default function MyLiquidityPoolsV3() {
             gammaPositions={gammaPositions}
           />
         ) : (
-          <Box mt={2} textAlign='center'>
+          <Box margin='16px 0 0' textAlign='center'>
             <p>{t('noLiquidityPositions')}.</p>
             {showConnectAWallet && (
-              <Box maxWidth={250} margin='20px auto 0'>
-                <Button fullWidth onClick={toggleWalletModal}>
+              <Box maxWidth='250px' margin='20px auto 0'>
+                <Button width='100%' onClick={toggleWalletModal}>
                   {t('connectWallet')}
                 </Button>
               </Box>

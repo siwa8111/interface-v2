@@ -28,7 +28,7 @@ import { useIsNetworkFailedImmediate } from 'hooks/v3/useIsNetworkFailed';
 import { JSBI } from '@uniswap/sdk';
 import { NONFUNGIBLE_POSITION_MANAGER_ADDRESSES } from 'constants/v3/addresses';
 import { calculateGasMargin, calculateGasMarginV3 } from 'utils';
-import { Button, Box } from '@material-ui/core';
+import { Button, Box } from 'theme/components';
 import {
   ConfirmationModalContent,
   CurrencyLogo,
@@ -433,9 +433,9 @@ export function AddLiquidityButton({
   const modalHeader = () => {
     return (
       <Box>
-        <Box mt={3} className='flex justify-between items-center'>
+        <Box margin='24px 0 0' className='flex justify-between items-center'>
           <Box className='flex items-center'>
-            <Box className='flex' mr={1}>
+            <Box className='flex' margin='0 8px 0'>
               <DoubleCurrencyLogo
                 currency0={baseCurrency}
                 currency1={quoteCurrency}
@@ -453,23 +453,23 @@ export function AddLiquidityButton({
           />
         </Box>
         <Box
-          mt='20px'
+          margin='20px 0 0'
           padding='20px 16px'
           borderRadius='10px'
           className='bg-secondary1'
         >
           <Box className='flex justify-between'>
             <Box className='flex items-center'>
-              <Box className='flex' mr='6px'>
+              <Box className='flex' margin='0 6px 0'>
                 <CurrencyLogo currency={baseCurrency} size='24px' />
               </Box>
               <p>{baseCurrency?.symbol}</p>
             </Box>
             <p>{mintInfo.parsedAmounts[Field.CURRENCY_A]?.toSignificant()}</p>
           </Box>
-          <Box mt={2} className='flex justify-between'>
+          <Box margin='16px 0 0' className='flex justify-between'>
             <Box className='flex items-center'>
-              <Box className='flex' mr='6px'>
+              <Box className='flex' margin='0 6px 0 0'>
                 <CurrencyLogo currency={quoteCurrency} size='24px' />
               </Box>
               <p>{quoteCurrency?.symbol}</p>
@@ -477,7 +477,7 @@ export function AddLiquidityButton({
             <p>{mintInfo.parsedAmounts[Field.CURRENCY_B]?.toSignificant()}</p>
           </Box>
         </Box>
-        <Box mt={3}>
+        <Box margin='24px 0 0'>
           <Box className='flex justify-between items-center'>
             <p>{t('selectedRange')}</p>
             {currencyBase && currencyQuote && (
@@ -489,7 +489,7 @@ export function AddLiquidityButton({
             )}
           </Box>
         </Box>
-        <Box width={1} mt={2} className='flex justify-between'>
+        <Box width='100%' margin='16px 0 0' className='flex justify-between'>
           {priceLower && (
             <Box
               className='v3-supply-liquidity-price-wrapper'
@@ -526,7 +526,7 @@ export function AddLiquidityButton({
           )}
         </Box>
         {currentPrice && (
-          <Box mt={2} className='v3-supply-liquidity-price-wrapper'>
+          <Box margin='16px 0 0' className='v3-supply-liquidity-price-wrapper'>
             <p>{t('currentPrice')}</p>
             <h6>{currentPrice}</h6>
             <p>
@@ -534,7 +534,7 @@ export function AddLiquidityButton({
             </p>
           </Box>
         )}
-        <Box mt={2}>
+        <Box margin='16px 0 0'>
           <Button className='v3-supply-liquidity-button' onClick={onAdd}>
             {t('confirm')}
           </Button>

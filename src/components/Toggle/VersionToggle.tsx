@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Box } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
 import './index.scss';
@@ -11,10 +10,15 @@ const VersionToggle: React.FC = () => {
   const { isV2, updateIsV2 } = useIsV2();
   const params: any = useParams();
   const history = useHistory();
-  const version = params && params.version ? params.version : 'v3';
   const isAnalyticsPage =
     history.location.pathname.includes('/analytics') &&
     !history.location.pathname.includes('pair/');
+  const version =
+    params && params.version
+      ? params.version
+      : isAnalyticsPage
+      ? 'total'
+      : 'v3';
 
   useEffect(() => {
     updateIsV2(version === 'v2');
@@ -43,30 +47,30 @@ const VersionToggle: React.FC = () => {
   };
 
   return (
-    <Box className='version-toggle-container'>
-      <Box
+    <div className='version-toggle-container'>
+      <div
         className={isV2 && version !== 'total' ? 'version-toggle-active' : ''}
         onClick={() => redirectWithVersion('v2')}
       >
         <small>{t('V2')}</small>
-      </Box>
+      </div>
 
-      <Box
+      <div
         className={!isV2 && version !== 'total' ? 'version-toggle-active' : ''}
         onClick={() => redirectWithVersion('v3')}
       >
         <small>{t('V3')}</small>
-      </Box>
+      </div>
 
       {isAnalyticsPage && (
-        <Box
+        <div
           className={version === 'total' ? 'version-toggle-active' : ''}
           onClick={() => redirectWithVersion('total')}
         >
           <small>{t('total')}</small>
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

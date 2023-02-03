@@ -8,7 +8,7 @@ import {
   TransactionConfirmationModal,
   TransactionErrorContent,
 } from 'components';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from 'theme/components';
 import { ReactComponent as CloseIcon } from 'assets/images/CloseIcon.svg';
 import { useTranslation } from 'react-i18next';
 import useDebouncedChangeHandler from 'utils/useDebouncedChangeHandler';
@@ -129,32 +129,32 @@ export default function WithdrawGammaLiquidityModal({
   function modalHeader() {
     return (
       <Box>
-        <Box mt={3} className='flex justify-between'>
+        <Box margin='24px 0 0' className='flex justify-between'>
           <p>
             {t('pooled')} {position.token0.symbol}
           </p>
           <Box className='flex items-center'>
             <p>{formatNumber((position.balance0 * percent) / 100)}</p>
-            <Box className='flex' ml={1}>
+            <Box className='flex' margin='0 0 0 8px'>
               <CurrencyLogo size='24px' currency={position.token0} />
             </Box>
           </Box>
         </Box>
-        <Box mt={2} className='flex justify-between'>
+        <Box margin='16px 0 0' className='flex justify-between'>
           <p>
             {t('pooled')} {position.token1.symbol}
           </p>
           <Box className='flex items-center'>
             <p>{formatNumber((position.balance1 * percent) / 100)}</p>
-            <Box className='flex' ml={1}>
+            <Box className='flex' margin='0 0 0 8px'>
               <CurrencyLogo size='24px' currency={position.token1} />
             </Box>
           </Box>
         </Box>
 
-        <Box mt={2}>
+        <Box margin='16px 0 0'>
           <Button
-            fullWidth
+            width='100%'
             className='gamma-liquidity-item-button'
             onClick={withdrawGammaLiquidity}
           >
@@ -196,13 +196,13 @@ export default function WithdrawGammaLiquidityModal({
           }
         />
       )}
-      <Box padding={3}>
+      <Box padding='24px'>
         <Box className='flex justify-between'>
           <p className='weight-600'>{t('removeLiquidity')}</p>
           <CloseIcon className='cursor-pointer' onClick={onClose} />
         </Box>
-        <Box mt={3} className='flex items-center'>
-          <Box className='flex' mr={1}>
+        <Box margin='24px 0 0' className='flex items-center'>
+          <Box className='flex' margin='0 8px 0 0'>
             <DoubleCurrencyLogo
               currency0={position.token0}
               currency1={position.token1}
@@ -213,13 +213,16 @@ export default function WithdrawGammaLiquidityModal({
             {position.token0.symbol}-{position.token1.symbol}
           </h5>
         </Box>
-        <Box mt={2} className='v3-remove-liquidity-input-wrapper'>
-          <Box mb={2} className='flex justify-between'>
+        <Box margin='16px 0 0' className='v3-remove-liquidity-input-wrapper'>
+          <Box margin='0 0 16px' className='flex justify-between'>
             <small className='text-secondary'>{t('amount')}</small>
           </Box>
-          <Box mb={2} className='flex items-center justify-between'>
+          <Box margin='0 0 16px' className='flex items-center justify-between'>
             <h3>{percentForSlider}%</h3>
-            <Box ml={1} className='v3-remove-liquidity-percent-buttons'>
+            <Box
+              margin='0 0 0 8px'
+              className='v3-remove-liquidity-percent-buttons'
+            >
               <Button onClick={() => onPercentSelectForSlider(25)}>25%</Button>
               <Button onClick={() => onPercentSelectForSlider(50)}>50%</Button>
               <Button onClick={() => onPercentSelectForSlider(75)}>75%</Button>
@@ -233,41 +236,46 @@ export default function WithdrawGammaLiquidityModal({
             max={100}
             step={1}
             value={percentForSlider}
-            handleChange={(event, value) => {
-              onPercentSelectForSlider(value as number);
+            onChange={(value) => {
+              onPercentSelectForSlider(value);
             }}
           />
         </Box>
-        <Box mt={2} className='bg-secondary1' borderRadius={10} p={2}>
+        <Box
+          margin='16px 0 0'
+          className='bg-secondary1'
+          borderRadius='10px'
+          padding='16px'
+        >
           <Box className='flex justify-between'>
             <p>
               {t('pooled')} {position.token0.symbol}
             </p>
             <Box className='flex items-center'>
               <p>{formatNumber(position.balance0)}</p>
-              <Box className='flex' ml={1}>
+              <Box className='flex' margin='0 0 0 8px'>
                 <CurrencyLogo size='24px' currency={position.token0} />
               </Box>
             </Box>
           </Box>
-          <Box mt={2} className='flex justify-between'>
+          <Box margin='16px 0 0' className='flex justify-between'>
             <p>
               {t('pooled')} {position.token1.symbol}
             </p>
             <Box className='flex items-center'>
               <p>{formatNumber(position.balance1)}</p>
-              <Box className='flex' ml={1}>
+              <Box className='flex' margin='0 0 0 8px'>
                 <CurrencyLogo size='24px' currency={position.token1} />
               </Box>
             </Box>
           </Box>
         </Box>
-        <Box mt={2}>
+        <Box margin='16px 0 0'>
           <Button
             className='gamma-liquidity-item-button'
             disabled={buttonDisabled}
             onClick={() => setShowConfirm(true)}
-            fullWidth
+            width='100%'
           >
             {buttonText}
           </Button>

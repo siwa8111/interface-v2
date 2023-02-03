@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
 import { useActiveWeb3React } from 'hooks';
 import { GammaPairs } from 'constants/index';
 import { getTokenFromAddress } from 'utils';
@@ -56,11 +55,11 @@ const GammaLPList: React.FC<{ gammaPositions: any; gammaPairs: string[] }> = ({
     : [];
 
   return (
-    <Box>
+    <div>
       {positionsList.map((position, ind) => (
         <GammaLPItem key={ind} gammaPosition={position} />
       ))}
-    </Box>
+    </div>
   );
 };
 

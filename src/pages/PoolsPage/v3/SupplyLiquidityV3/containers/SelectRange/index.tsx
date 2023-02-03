@@ -19,8 +19,8 @@ import { Presets } from 'state/mint/v3/reducer';
 import { PriceFormats } from 'components/v3/PriceFomatToggler';
 import LiquidityChartRangeInput from 'components/v3/LiquidityChartRangeInput';
 import { GammaPairs, GlobalConst, GlobalData } from 'constants/index';
-import { Box, ButtonGroup, Button } from '@material-ui/core';
-import { ReportProblemOutlined } from '@material-ui/icons';
+import { Box, Button } from 'theme/components';
+import { AlertTriangle } from 'react-feather';
 import { getEternalFarmFromTokens } from 'utils';
 import GammaLogo from 'assets/images/gammaLogo.png';
 import { Trans, useTranslation } from 'react-i18next';
@@ -295,57 +295,55 @@ export function SelectRange({
       <small className='weight-600'>{t('selectRange')}</small>
       {gammaPair && (
         <Box className='buttonGroup poolRangeButtonGroup'>
-          <ButtonGroup>
-            <Button
-              className={
-                liquidityRangeType ===
-                GlobalConst.v3LiquidityRangeType.GAMMA_RANGE
-                  ? 'active'
-                  : ''
-              }
-              onClick={() =>
-                onChangeLiquidityRangeType(
-                  GlobalConst.v3LiquidityRangeType.GAMMA_RANGE,
-                )
-              }
-            >
-              <Box className='flex items-start'>
-                <span>{t('automatic')}</span>
-                <Box ml='3px' className='poolRangeBetaBox'>
-                  {t('beta')}
-                </Box>
+          <Button
+            className={
+              liquidityRangeType ===
+              GlobalConst.v3LiquidityRangeType.GAMMA_RANGE
+                ? 'active'
+                : ''
+            }
+            onClick={() =>
+              onChangeLiquidityRangeType(
+                GlobalConst.v3LiquidityRangeType.GAMMA_RANGE,
+              )
+            }
+          >
+            <Box className='flex items-start'>
+              <span>{t('automatic')}</span>
+              <Box margin='0 0 0 3px' className='poolRangeBetaBox'>
+                {t('beta')}
               </Box>
-            </Button>
-            <Button
-              className={
-                liquidityRangeType ===
-                GlobalConst.v3LiquidityRangeType.MANUAL_RANGE
-                  ? 'active'
-                  : ''
-              }
-              onClick={() =>
-                onChangeLiquidityRangeType(
-                  GlobalConst.v3LiquidityRangeType.MANUAL_RANGE,
-                )
-              }
-            >
-              {t('manual')}
-            </Button>
-          </ButtonGroup>
+            </Box>
+          </Button>
+          <Button
+            className={
+              liquidityRangeType ===
+              GlobalConst.v3LiquidityRangeType.MANUAL_RANGE
+                ? 'active'
+                : ''
+            }
+            onClick={() =>
+              onChangeLiquidityRangeType(
+                GlobalConst.v3LiquidityRangeType.MANUAL_RANGE,
+              )
+            }
+          >
+            {t('manual')}
+          </Button>
         </Box>
       )}
       {liquidityRangeType === GlobalConst.v3LiquidityRangeType.GAMMA_RANGE && (
         <>
-          <Box my={1.5} className='poolRangePowerGamma'>
+          <Box margin='12px 0' className='poolRangePowerGamma'>
             <span className='text-secondary'>{t('poweredBy')}</span>
             <img src={GammaLogo} alt='Gamma Logo' />
           </Box>
-          <Box mb={1.5}>
+          <Box margin='12px 0 0'>
             <small className='weight-600'>{t('selectStrategy')}</small>
           </Box>
         </>
       )}
-      <Box my={1}>
+      <Box margin='8px 0'>
         <PresetRanges
           mintInfo={mintInfo}
           baseCurrency={currencyA}
@@ -369,7 +367,7 @@ export function SelectRange({
         gammaCurrencyA.wrapped.symbol &&
         gammaCurrencyB.wrapped.symbol &&
         gammaPair && (
-          <Box my={2}>
+          <Box margin='16px 0'>
             <small className='text-secondary'>
               <Trans
                 i18nKey='gammaLiquidityRangeLearnMore'
@@ -409,7 +407,7 @@ export function SelectRange({
               </span>
             </Box>
           )}
-          <Box my={2}>
+          <Box margin='16px 0'>
             <RangeSelector
               priceLower={priceLower}
               priceUpper={priceUpper}
@@ -430,13 +428,13 @@ export function SelectRange({
           </Box>
           {activePreset === Presets.FULL && fullRangeWarningShown && (
             <Box className='pool-range-chart-warning border-yellow5'>
-              <Box width={1} className='flex items-center'>
+              <Box width='100%' className='flex items-center'>
                 <Box className='pool-range-chart-warning-icon'>
-                  <ReportProblemOutlined />
+                  <AlertTriangle />
                 </Box>
                 <small>{t('efficiencyComparison')}</small>
               </Box>
-              <Box width={1} mt={1} mb={1.5}>
+              <Box width='100%' margin='8px 0 12px'>
                 <span>
                   <Trans
                     i18nKey='fullRangePositionsEarnLessFeeLearnMore'
@@ -463,7 +461,7 @@ export function SelectRange({
             rightPricePercent - leftPricePercent < minRangeLength && (
               <Box className='pool-range-chart-warning'>
                 <Box className='pool-range-chart-warning-icon'>
-                  <ReportProblemOutlined />
+                  <AlertTriangle />
                 </Box>
                 <span>
                   {t('minPriceRangeWarning', { rangeLength: minRangeLength })}
@@ -473,7 +471,7 @@ export function SelectRange({
           {mintInfo.outOfRange && (
             <Box className='pool-range-chart-warning'>
               <Box className='pool-range-chart-warning-icon'>
-                <ReportProblemOutlined />
+                <AlertTriangle />
               </Box>
               <span>{t('priceRangeNotElligibleWraning')}</span>
             </Box>
@@ -481,7 +479,7 @@ export function SelectRange({
           {mintInfo.invalidRange && (
             <Box className='pool-range-chart-warning'>
               <Box className='pool-range-chart-warning-icon'>
-                <ReportProblemOutlined />
+                <AlertTriangle />
               </Box>
               <span>{t('invalidRange')}</span>
             </Box>

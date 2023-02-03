@@ -7,7 +7,7 @@ import { FarmingType } from '../../models/enums';
 import { Link, useLocation } from 'react-router-dom';
 import './index.scss';
 import FarmCard from './FarmCard';
-import { Box, Divider, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, Divider } from 'theme/components';
 import { useV3StakeData } from 'state/farms/hooks';
 import { useFarmingSubgraph } from 'hooks/useIncentiveSubgraph';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +23,7 @@ import { useUSDCPricesToken } from 'utils/useUSDCPrice';
 import { useSingleContractMultipleData } from 'state/multicall/hooks';
 import { useMasterChefContract } from 'hooks/useContract';
 import { formatUnits } from 'ethers/lib/utils';
+import { useIsXS } from 'hooks/useMediaQuery';
 
 export const FarmingMyFarms: React.FC<{
   search: string;
@@ -30,8 +31,7 @@ export const FarmingMyFarms: React.FC<{
   const { t } = useTranslation();
   const { chainId, account } = useActiveWeb3React();
   const tokenMap = useSelectedTokenList();
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
+  const isMobile = useIsXS();
 
   const { v3FarmSortBy } = GlobalConst.utils;
   const [sortByQuick, setSortByQuick] = useState(v3FarmSortBy.pool);
@@ -272,25 +272,25 @@ export const FarmingMyFarms: React.FC<{
     {
       text: t('pool'),
       index: v3FarmSortBy.pool,
-      width: 0.5,
+      width: '50%',
       justify: 'flex-start',
     },
     {
       text: t('poolAPR'),
       index: v3FarmSortBy.poolAPR,
-      width: 0.15,
+      width: '15%',
       justify: 'flex-start',
     },
     {
       text: t('farmAPR'),
       index: v3FarmSortBy.farmAPR,
-      width: 0.15,
+      width: '15%',
       justify: 'flex-start',
     },
     {
       text: t('earnedRewards'),
       index: v3FarmSortBy.rewards,
-      width: 0.2,
+      width: '20%',
       justify: 'flex-start',
     },
   ];
@@ -299,31 +299,31 @@ export const FarmingMyFarms: React.FC<{
     {
       text: t('pool'),
       index: v3FarmSortBy.pool,
-      width: 0.3,
+      width: '30%',
       justify: 'flex-start',
     },
     {
       text: t('tvl'),
       index: v3FarmSortBy.tvl,
-      width: 0.15,
+      width: '15%',
       justify: 'flex-start',
     },
     {
       text: t('rewards'),
       index: v3FarmSortBy.rewards,
-      width: 0.25,
+      width: '25%',
       justify: 'flex-start',
     },
     {
       text: t('poolAPR'),
       index: v3FarmSortBy.poolAPR,
-      width: 0.15,
+      width: '15%',
       justify: 'flex-start',
     },
     {
       text: t('farmAPR'),
       index: v3FarmSortBy.farmAPR,
-      width: 0.15,
+      width: '15%',
       justify: 'flex-start',
     },
   ];
@@ -661,31 +661,29 @@ export const FarmingMyFarms: React.FC<{
     });
 
   return (
-    <Box mt={2}>
+    <Box margin='16px 0 0'>
       <Divider />
-      <Box px={2} my={2}>
+      <Box padding='0 16px' margin='16px 0'>
         <h6>QuickSwap {t('farms')}</h6>
       </Box>
       {transferredPositionsLoading ||
       eternalFarmPoolAprsLoading ||
       eternalFarmAprsLoading ||
       !shallowPositions ? (
-        <Box py={5} className='flex justify-center'>
+        <Box padding='40px 0' className='flex justify-center'>
           <Loader stroke={'white'} size={'1.5rem'} />
         </Box>
       ) : shallowPositions && shallowPositions.length === 0 ? (
-        <Box py={5} className='flex flex-col items-center'>
+        <Box padding='40px 0' className='flex flex-col items-center'>
           <Frown size={35} stroke={'white'} />
-          <Box mb={3} mt={1}>
-            {t('nofarms')}
-          </Box>
+          <Box margin='8px 0 24px'>{t('nofarms')}</Box>
         </Box>
       ) : shallowPositions && shallowPositions.length !== 0 ? (
         <Box padding='24px'>
           {farmedNFTs && farmedNFTs.length > 0 && (
-            <Box pb={2}>
+            <Box padding='0 0 16px'>
               {!isMobile && (
-                <Box px={3.5}>
+                <Box padding='0 28px'>
                   <Box width='85%'>
                     <SortColumns
                       sortColumns={sortByDesktopItemsQuick}
@@ -695,11 +693,11 @@ export const FarmingMyFarms: React.FC<{
                   </Box>
                 </Box>
               )}
-              <Box mt={2}>
+              <Box margin='16px 0 0'>
                 {farmedNFTs.map((el, i) => {
                   return (
                     <div
-                      className={'v3-my-farms-position-card'}
+                      className='v3-my-farms-position-card'
                       key={i}
                       data-navigatedto={hash == `#${el.id}`}
                     >
@@ -724,26 +722,24 @@ export const FarmingMyFarms: React.FC<{
           )}
         </Box>
       ) : null}
-      <Box my={2}>
+      <Box margin='16px 0'>
         <Divider />
-        <Box px={2} mt={2}>
+        <Box padding='0 16px' margin='16px 0 0'>
           <h6>Gamma {t('farms')}</h6>
         </Box>
         {gammaFarmsLoading || positionsLoading || gammaRewardsLoading ? (
-          <Box py={5} className='flex justify-center'>
+          <Box padding='40px 0' className='flex justify-center'>
             <Loader stroke={'white'} size={'1.5rem'} />
           </Box>
         ) : myGammaFarms.length === 0 ? (
-          <Box py={5} className='flex flex-col items-center'>
+          <Box padding='40px 0' className='flex flex-col items-center'>
             <Frown size={35} stroke={'white'} />
-            <Box mb={3} mt={1}>
-              {t('nofarms')}
-            </Box>
+            <Box margin='8px 0 24px'>{t('nofarms')}</Box>
           </Box>
         ) : chainId ? (
           <Box padding='24px'>
             {!isMobile && (
-              <Box px={1.5}>
+              <Box padding='0 12px'>
                 <Box width='90%'>
                   <SortColumns
                     sortColumns={sortByDesktopItemsGamma}
@@ -753,9 +749,9 @@ export const FarmingMyFarms: React.FC<{
                 </Box>
               </Box>
             )}
-            <Box pb={2}>
+            <Box padding='0 0 16px'>
               {myGammaFarms.map((farm) => (
-                <Box mt={2} key={farm.address}>
+                <Box margin='16px 0 0' key={farm.address}>
                   <GammaFarmCard
                     token0={farm.token0}
                     token1={farm.token1}

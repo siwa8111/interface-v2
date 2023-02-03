@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from 'theme/components';
 import { Frown } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import Loader from '../../components/Loader';
@@ -379,7 +379,7 @@ const GammaFarmsPage: React.FC<{
     });
 
   return (
-    <Box px={2} py={3}>
+    <Box padding='24px 16px'>
       {positionsLoading || gammaFarmsLoading || gammaRewardsLoading ? (
         <div className='flex justify-center' style={{ padding: '16px 0' }}>
           <Loader stroke='white' size='1.5rem' />
@@ -395,7 +395,7 @@ const GammaFarmsPage: React.FC<{
       ) : !gammaFarmsLoading && filteredFarms.length > 0 && chainId ? (
         <Box>
           {filteredFarms.map((farm) => (
-            <Box mb={2} key={farm.address}>
+            <Box margin='0 0 16px' key={farm.address}>
               <GammaFarmCard
                 token0={farm.token0}
                 token1={farm.token1}

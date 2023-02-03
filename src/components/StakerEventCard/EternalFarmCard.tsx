@@ -3,8 +3,9 @@ import { DoubleCurrencyLogo } from 'components';
 import { useActiveWeb3React } from 'hooks';
 import Loader from '../Loader';
 import { Token } from '@uniswap/sdk';
+import { ReactComponent as AddIcon } from 'assets/images/addIcon.svg';
+import { Box, Button } from 'theme/components';
 import { Link } from 'react-router-dom';
-import { Box, Button, useMediaQuery, useTheme } from '@material-ui/core';
 import { formatUnits } from 'ethers/lib/utils';
 import { formatReward } from 'utils/formatReward';
 import { formatCompact, formatNumber, getTokenFromAddress } from 'utils';
@@ -12,6 +13,7 @@ import { Aprs } from 'models/interfaces';
 import { useSelectedTokenList } from 'state/lists/hooks';
 import { getAddress } from 'ethers/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { useIsXS } from 'hooks/useMediaQuery';
 
 interface EternalFarmCardProps {
   active?: boolean;
@@ -94,14 +96,13 @@ export function EternalFarmCard({
         ])
       : undefined;
 
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
+  const isMobile = useIsXS();
 
   return (
     <Box
-      padding={1.5}
+      padding='12px'
       width='100%'
-      borderRadius={16}
+      borderRadius='16px'
       className='flex flex-wrap items-center bg-secondary1'
     >
       <Box
@@ -110,7 +111,7 @@ export function EternalFarmCard({
       >
         <Box
           width={isMobile ? '100%' : '30%'}
-          mb={isMobile ? 1 : 0}
+          margin={isMobile ? '0 0 8px' : '0'}
           className='flex items-center'
         >
           {token0 && token1 && (
@@ -121,7 +122,7 @@ export function EternalFarmCard({
             />
           )}
 
-          <Box ml='6px'>
+          <Box margin='0 0 0 6px'>
             <small className='weight-600'>{`${pool.token0.symbol}/${pool.token1.symbol}`}</small>
             <Box className='cursor-pointer'>
               <Link
@@ -136,7 +137,7 @@ export function EternalFarmCard({
         </Box>
         <Box
           width={isMobile ? '100%' : '15%'}
-          mb={isMobile ? 1 : 0}
+          margin={isMobile ? '0 0 8px' : '0'}
           className='flex justify-between'
         >
           {isMobile && <small className='text-secondary'>{t('tvl')}</small>}
@@ -144,7 +145,7 @@ export function EternalFarmCard({
         </Box>
         <Box
           width={isMobile ? '100%' : '25%'}
-          mb={isMobile ? 1 : 0}
+          margin={isMobile ? '0 0 8px' : '0'}
           className='flex justify-between'
         >
           {isMobile && <small className='text-secondary'>{t('rewards')}</small>}
@@ -176,7 +177,7 @@ export function EternalFarmCard({
         </Box>
 
         <Box
-          mb={isMobile ? 1 : 0}
+          margin={isMobile ? '0 0 8px' : '0'}
           width={isMobile ? '100%' : '15%'}
           className='flex justify-between'
         >
@@ -189,7 +190,7 @@ export function EternalFarmCard({
 
         <Box
           width={isMobile ? '100%' : '15%'}
-          mb={isMobile ? 1 : 0}
+          margin={isMobile ? '0 0 8px' : '0'}
           className='flex justify-between'
         >
           {isMobile && <small className='text-secondary'>{t('farmAPR')}</small>}
@@ -201,11 +202,7 @@ export function EternalFarmCard({
       </Box>
 
       <Box width={isMobile ? '100%' : '10%'}>
-        <Button
-          fullWidth
-          style={{ height: 40, borderRadius: 10 }}
-          onClick={farmHandler}
-        >
+        <Button width='100%' onClick={farmHandler}>
           {t('farm')}
         </Button>
       </Box>

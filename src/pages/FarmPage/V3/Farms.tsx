@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Box, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box } from 'theme/components';
 import CustomSelector from 'components/v3/CustomSelector';
 import CustomTabSwitch from 'components/v3/CustomTabSwitch';
 import useParsedQueryString from 'hooks/useParsedQueryString';
@@ -8,9 +8,9 @@ import { useHistory } from 'react-router-dom';
 import EternalFarmsPage from 'pages/EternalFarmsPage';
 import GammaFarmsPage from 'pages/GammaFarmsPage';
 import { FarmingMyFarms } from 'components/StakerMyStakes';
-import { SelectorItem } from 'components/v3/CustomSelector/CustomSelector';
 import { SearchInput, SortColumns, CustomSwitch } from 'components';
 import { GlobalConst } from 'constants/index';
+import { useIsXS } from 'hooks/useMediaQuery';
 
 export default function Farms() {
   const { t } = useTranslation();
@@ -20,8 +20,7 @@ export default function Farms() {
     parsedQuery && parsedQuery.farmStatus
       ? (parsedQuery.farmStatus as string)
       : 'active';
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
+  const isMobile = useIsXS();
 
   const history = useHistory();
 
@@ -68,7 +67,7 @@ export default function Farms() {
     [t],
   );
   const onChangeFarmCategory = useCallback(
-    (selected: SelectorItem) => {
+    (selected) => {
       history.push(`?tab=${selected?.link}`);
     },
     [history],
@@ -138,31 +137,31 @@ export default function Farms() {
     {
       text: t('pool'),
       index: GlobalConst.utils.v3FarmSortBy.pool,
-      width: 0.3,
+      width: '30%',
       justify: 'flex-start',
     },
     {
       text: t('tvl'),
       index: GlobalConst.utils.v3FarmSortBy.tvl,
-      width: 0.15,
+      width: '15%',
       justify: 'flex-start',
     },
     {
       text: t('rewards'),
       index: GlobalConst.utils.v3FarmSortBy.rewards,
-      width: 0.25,
+      width: '25%',
       justify: 'flex-start',
     },
     {
       text: t('poolAPR'),
       index: GlobalConst.utils.v3FarmSortBy.poolAPR,
-      width: 0.15,
+      width: '15%',
       justify: 'flex-start',
     },
     {
       text: t('farmAPR'),
       index: GlobalConst.utils.v3FarmSortBy.farmAPR,
-      width: 0.15,
+      width: '15%',
       justify: 'flex-start',
     },
   ];
@@ -182,22 +181,29 @@ export default function Farms() {
   });
 
   return (
-    <Box className='bg-palette' borderRadius={10}>
-      <Box pt={2} px={2} className='flex flex-wrap justify-between'>
+    <Box className='bg-palette' borderRadius='10px'>
+      <Box padding='16px 16px 0' className='flex flex-wrap justify-between'>
         <CustomSelector
-          height={36}
+          height='36px'
           items={v3FarmCategories}
           selectedItem={selectedFarmCategory}
           handleChange={onChangeFarmCategory}
         />
-        <Box display='flex'>
+        <Box
+          className='flex items-center flex-wrap'
+          width={isMobile ? '100%' : 'auto'}
+        >
           {selectedFarmCategory.id === 1 && (
-            <CustomSwitch width={160} height={40} items={farmStatusItems} />
+            <Box
+              margin={isMobile ? '16px 0 0' : '0'}
+              width={isMobile ? '100%' : '160px'}
+            >
+              <CustomSwitch width='100%' height={40} items={farmStatusItems} />
+            </Box>
           )}
           <Box
-            mt={isMobile ? 2 : 0}
-            ml={isMobile ? 0 : 2}
-            width={isMobile ? 1 : 200}
+            margin={isMobile ? '16px 0 0' : '0 0 0 16px'}
+            width={isMobile ? '100%' : '200px'}
           >
             <SearchInput
               placeholder='Search'
@@ -211,16 +217,16 @@ export default function Farms() {
 
       {selectedFarmCategory.id !== 0 && (
         <>
-          <Box mt={2} pl='12px' className='bg-secondary1'>
+          <Box margin='16px 0 0' padding='0 0 0 12px' className='bg-secondary1'>
             <CustomTabSwitch
               items={farmFilters}
               selectedItem={farmFilter}
               handleTabChange={setFarmFilter}
-              height={50}
+              height='50px'
             />
           </Box>
           {!isMobile && (
-            <Box mt={2} px={3.5}>
+            <Box margin='16px 0 0' padding='0 28px'>
               <Box width='90%'>
                 <SortColumns
                   sortColumns={sortByDesktopItems}

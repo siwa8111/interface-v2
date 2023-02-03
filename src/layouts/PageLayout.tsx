@@ -1,5 +1,5 @@
 import React, { lazy, useEffect, useState } from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from 'theme/components';
 import { useHistory } from 'react-router-dom';
 import { useIsProMode } from 'state/application/hooks';
 import { useActiveWeb3React } from 'hooks';

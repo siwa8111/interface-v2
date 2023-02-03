@@ -9,7 +9,7 @@ import {
 } from '@uniswap/sdk';
 import ReactGA from 'react-ga';
 import { ArrowDown } from 'react-feather';
-import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Box, Button } from 'theme/components';
 import { useWalletModalToggle } from 'state/application/hooks';
 import {
   useDefaultsFromURLSearch,
@@ -21,7 +21,7 @@ import {
   useExpertModeManager,
   useUserSlippageTolerance,
 } from 'state/user/hooks';
-import { Field } from 'state/swap/actions';
+import { Field, SwapDelay } from 'state/swap/actions';
 import {
   CurrencyInput,
   ConfirmSwapModal,
@@ -54,6 +54,7 @@ import { useHistory } from 'react-router-dom';
 import { useAllTokens, useCurrency } from 'hooks/Tokens';
 import useParsedQueryString from 'hooks/useParsedQueryString';
 import useSwapRedirects from 'hooks/useSwapRedirect';
+import Loader from 'components/Loader';
 
 const Swap: React.FC<{
   currencyBgClass?: string;
@@ -96,7 +97,7 @@ const Swap: React.FC<{
 
   const { t } = useTranslation();
   const { account } = useActiveWeb3React();
-  const { independentField, typedValue, recipient } = useSwapState();
+  const { independentField, typedValue, recipient, swapDelay } = useSwapState();
   const {
     v1Trade,
     v2Trade,
@@ -533,6 +534,11 @@ const Swap: React.FC<{
     t,
   ]);
 
+  const fetchingBestRoute =
+    swapDelay === SwapDelay.USER_INPUT ||
+    swapDelay === SwapDelay.FETCHING_SWAP ||
+    swapDelay === SwapDelay.FETCHING_BONUS;
+
   return (
     <Box>
       <TokenWarningModal
@@ -638,48 +644,53 @@ const Swap: React.FC<{
           )}
         </Box>
       )}
-      <AdvancedSwapDetails trade={trade} />
+      {fetchingBestRoute ? (
+        <Box margin='16px 0 0' className='flex justify-center'>
+          <p>Fetching Best Route...</p>
+        </Box>
+      ) : (
+        <AdvancedSwapDetails trade={trade} />
+      )}
       <Box className='swapButtonWrapper'>
         {showApproveFlow && (
-          <Box width='48%'>
-            <Button
-              fullWidth
-              disabled={
-                approving ||
-                approval !== ApprovalState.NOT_APPROVED ||
-                approvalSubmitted
-              }
-              onClick={async () => {
-                setApproving(true);
-                try {
-                  await approveCallback();
-                  setApproving(false);
-                } catch (err) {
-                  setApproving(false);
-                }
-              }}
-            >
-              {approval === ApprovalState.PENDING ? (
-                <Box className='content'>
-                  {t('approving')} <CircularProgress size={16} />
-                </Box>
-              ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                t('approved')
-              ) : (
-                `${t('approve')} ${currencies[Field.INPUT]?.symbol}`
-              )}
-            </Button>
-          </Box>
-        )}
-        <Box width={showApproveFlow ? '48%' : '100%'}>
           <Button
-            fullWidth
-            disabled={swapButtonDisabled as boolean}
-            onClick={account ? onSwap : connectWallet}
+            width='48%'
+            disabled={
+              approving ||
+              approval !== ApprovalState.NOT_APPROVED ||
+              approvalSubmitted
+            }
+            onClick={async () => {
+              setApproving(true);
+              try {
+                await approveCallback();
+                setApproving(false);
+              } catch (err) {
+                setApproving(false);
+              }
+            }}
           >
-            {swapButtonText}
+            {approval === ApprovalState.PENDING ? (
+              <Box className='flex justify-center items-center'>
+                {t('approving')}
+                <Box className='flex' margin='0 0 0 3px'>
+                  <Loader size='16px' color='white' />
+                </Box>
+              </Box>
+            ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+              t('approved')
+            ) : (
+              `${t('approve')} ${currencies[Field.INPUT]?.symbol}`
+            )}
           </Button>
-        </Box>
+        )}
+        <Button
+          width={showApproveFlow ? '48%' : '100%'}
+          disabled={swapButtonDisabled as boolean}
+          onClick={account ? onSwap : connectWallet}
+        >
+          {swapButtonText}
+        </Button>
       </Box>
     </Box>
   );

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from 'theme/components';
 import { useTranslation } from 'react-i18next';
 import { DoubleCurrencyLogo } from 'components';
 import { GammaPairs } from 'constants/index';
 import './index.scss';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import { ChevronUp, ChevronDown } from 'react-feather';
 import GammaLPItemDetails from '../GammaLPItemDetails';
 
 const GammaLPItem: React.FC<{ gammaPosition: any }> = ({ gammaPosition }) => {
@@ -27,21 +27,27 @@ const GammaLPItem: React.FC<{ gammaPosition: any }> = ({ gammaPosition }) => {
     <Box className='gamma-liquidity-item'>
       <Box className='flex items-center justify-between'>
         <Box className='flex items-center'>
-          <Box className='flex' mr='8px'>
-            <DoubleCurrencyLogo
-              currency0={gammaPosition.token0}
-              currency1={gammaPosition.token1}
-              size={24}
-            />
-          </Box>
-          <p className='weight-600'>
-            {gammaPosition.token0.symbol}/{gammaPosition.token1.symbol}
-          </p>
-          <Box ml={1.5} className='gamma-liquidity-range'>
-            <small>
-              {gammaPairInfo?.title} {t('range').toLowerCase()}
-            </small>
-          </Box>
+          {gammaPosition.token0 && gammaPosition.token1 && (
+            <>
+              <Box className='flex' margin='0 8px 0 0'>
+                <DoubleCurrencyLogo
+                  currency0={gammaPosition.token0}
+                  currency1={gammaPosition.token1}
+                  size={24}
+                />
+              </Box>
+              <p className='weight-600'>
+                {gammaPosition.token0.symbol}/{gammaPosition.token1.symbol}
+              </p>
+            </>
+          )}
+          {gammaPairInfo && (
+            <Box margin='0 0 0 12px' className='gamma-liquidity-range'>
+              <small>
+                {gammaPairInfo.title} {t('range').toLowerCase()}
+              </small>
+            </Box>
+          )}
         </Box>
 
         <Box
@@ -50,11 +56,11 @@ const GammaLPItem: React.FC<{ gammaPosition: any }> = ({ gammaPosition }) => {
           }`}
           onClick={() => setExpanded(!expanded)}
         >
-          {expanded ? <ExpandLess /> : <ExpandMore />}
+          {expanded ? <ChevronUp /> : <ChevronDown />}
         </Box>
       </Box>
-      {expanded && (
-        <Box mt={2}>
+      {expanded && gammaPosition && (
+        <Box margin='16px 0 0'>
           <GammaLPItemDetails gammaPosition={gammaPosition} />
         </Box>
       )}

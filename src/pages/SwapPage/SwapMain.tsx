@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from 'theme/components';
 import { ReactComponent as SettingsIcon } from 'assets/images/SettingsIcon.svg';
 import { useIsProMode, useIsV2 } from 'state/application/hooks';
 import { Swap, SettingsModal, ToggleSwitch } from 'components';
-import {
-  GelatoLimitOrderPanel,
-  GelatoLimitOrdersHistoryPanel,
-} from '@gelatonetwork/limit-orders-react';
 import { Trans, useTranslation } from 'react-i18next';
 import { SwapBestTrade } from 'components/Swap';
 import SwapV3Page from './V3/Swap';
@@ -92,7 +88,7 @@ const SwapMain: React.FC = () => {
           isProMode ? ' proModeWrapper' : ''
         }`}
       >
-        <Box display='flex' width={1}>
+        <Box className='flex' width='100%'>
           <Box
             //TODO: Active class resolution should come from from a func
             className={swapTabClass(SWAP_BEST_TRADE)}
@@ -129,7 +125,7 @@ const SwapMain: React.FC = () => {
         </Box>
         {!isProMode && (
           <Box margin='8px 16px 0' className='flex items-center'>
-            <Box className='flex items-center' mr={1}>
+            <Box className='flex items-center' margin='0 8px 0'>
               <span
                 className='text-secondary text-uppercase'
                 style={{ marginRight: 8 }}
@@ -149,7 +145,7 @@ const SwapMain: React.FC = () => {
           </Box>
         )}
       </Box>
-      <Box padding={isProMode ? '0 24px' : '0'} mt={3.5}>
+      <Box padding={isProMode ? '0 24px' : '0'} margin='28px 0 0'>
         {swapType === SWAP_BEST_TRADE && <SwapBestTrade />}
         {swapType === SWAP_NORMAL && <Swap />}
         {swapType === SWAP_V3 && <SwapV3Page />}

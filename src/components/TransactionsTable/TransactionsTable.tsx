@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Divider, useMediaQuery } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { Box, Divider } from 'theme/components';
 import { useTranslation } from 'react-i18next';
 import { CustomTable } from 'components';
 import { formatNumber, getEtherscanLink, shortenTx } from 'utils';
@@ -9,6 +8,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { TxnType } from 'constants/index';
 import 'components/styles/TransactionsTable.scss';
+import { useIsXS } from 'hooks/useMediaQuery';
 dayjs.extend(relativeTime);
 
 interface TransactionsTableProps {
@@ -18,6 +18,7 @@ interface TransactionsTableProps {
 const TransactionsTable: React.FC<TransactionsTableProps> = ({ data }) => {
   const { t } = useTranslation();
   const [txFilter, setTxFilter] = useState(-1);
+  const isMobile = useIsXS();
   const txHeadCells = [
     {
       id: 'description',
@@ -87,8 +88,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ data }) => {
     },
   ];
   const { chainId } = useActiveWeb3React();
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
   const getTxString = (txn: any) => {
     const messageData = {
       token0Symbol: txn.pair.token1.symbol,
@@ -105,8 +104,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ data }) => {
   };
   const mobileHTML = (txn: any, index: number) => {
     return (
-      <Box mt={index === 0 ? 0 : 3} key={index}>
-        <Box mb={1}>
+      <Box margin={index === 0 ? '0' : '24px 0 0'} key={index}>
+        <Box margin='0 0 8px'>
           {chainId ? (
             <a
               href={getEtherscanLink(

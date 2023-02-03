@@ -2,10 +2,6 @@ import React, { lazy, Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { Switch, Route } from 'react-router-dom';
-import {
-  ThemeProvider as MuiThemeProvider,
-  CssBaseline,
-} from '@material-ui/core';
 import { Provider } from 'react-redux';
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import store from 'state';
@@ -66,7 +62,6 @@ import AdsUpdater from 'state/ads/updater';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './i18n';
-import { mainTheme } from './theme';
 import Background from 'layouts/Background';
 import GasUpdater from 'state/application/gasUpdater';
 import { RedirectExternal } from 'components/RedirectExternal/RedirectExternal';
@@ -75,19 +70,16 @@ const Web3ProviderNetwork = createWeb3ReactRoot(
   GlobalConst.utils.NetworkContextName,
 );
 
-const ThemeProvider: React.FC = ({ children }) => {
-  const theme = mainTheme;
-
-  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
-};
-
 const Providers: React.FC = ({ children }) => {
   return (
-    <Suspense fallback={<Background fallback={true} />}>
-      <ThemeProvider>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
+    <Suspense
+      fallback={
+        <div className='page'>
+          <Background fallback={true} />
+        </div>
+      }
+    >
+      {children}
     </Suspense>
   );
 };

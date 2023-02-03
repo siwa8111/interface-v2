@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Button } from 'theme/components';
 import { useTranslation } from 'react-i18next';
 import './index.scss';
 import { formatNumber } from 'utils';
 import { CurrencyLogo } from 'components';
 import Badge from 'components/v3/Badge';
-import { Button } from '@material-ui/core';
 import useUSDCPrice from 'hooks/v3/useUSDCPrice';
 import { formatUnits } from 'ethers/lib/utils';
 import IncreaseGammaLiquidityModal from '../IncreaseGammaLiquidityModal';
@@ -15,17 +14,21 @@ const GammaLPItemDetails: React.FC<{ gammaPosition: any }> = ({
   gammaPosition,
 }) => {
   const { t } = useTranslation();
-  const token0USDPrice = useUSDCPrice(gammaPosition.token0);
-  const token0PooledPercent = token0USDPrice
-    ? ((Number(token0USDPrice.toSignificant()) * gammaPosition.balance0) /
-        gammaPosition.balanceUSD) *
-      100
-    : 0;
+  const token0USDPrice = useUSDCPrice(gammaPosition?.token0);
+  const token0PooledPercent =
+    token0USDPrice &&
+    gammaPosition &&
+    gammaPosition.balance0 &&
+    Number(gammaPosition.balanceUSD) > 0
+      ? ((Number(token0USDPrice.toSignificant()) * gammaPosition.balance0) /
+          gammaPosition.balanceUSD) *
+        100
+      : 0;
 
   const [showAddLPModal, setShowAddLPModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
-  return gammaPosition ? (
+  return (
     <Box>
       {showAddLPModal && (
         <IncreaseGammaLiquidityModal
@@ -44,43 +47,58 @@ const GammaLPItemDetails: React.FC<{ gammaPosition: any }> = ({
       <Box className='flex justify-between'>
         <small>{t('myLiquidity')}</small>
         <small>
-          ${formatNumber(gammaPosition.balanceUSD)} (
-          {formatNumber(formatUnits(gammaPosition.shares.toString(), 18))} LP)
+          $
+          {gammaPosition.balanceUSD
+            ? formatNumber(Number(gammaPosition.balanceUSD))
+            : 0}{' '}
+          (
+          {gammaPosition.shares
+            ? formatNumber(formatUnits(gammaPosition.shares.toString(), 18))
+            : 0}{' '}
+          LP)
         </small>
       </Box>
-      <Box className='flex justify-between' mt={1}>
-        <Box className='flex items-center'>
-          <Box className='flex' mr={1}>
-            <CurrencyLogo currency={gammaPosition.token0} size='24px' />
+      <Box className='flex justify-between' margin='8px 0 0'>
+        {gammaPosition.token0 && (
+          <Box className='flex items-center'>
+            <Box className='flex' margin='0 8px 0 0'>
+              <CurrencyLogo currency={gammaPosition.token0} size='24px' />
+            </Box>
+            <small>
+              {t('pooled')} {gammaPosition.token0.symbol}
+            </small>
           </Box>
-          <small>
-            {t('pooled')} {gammaPosition.token0.symbol}
-          </small>
-        </Box>
+        )}
         <Box className='flex items-center'>
-          <small>{formatNumber(gammaPosition.balance0)}</small>
-          <Box ml='6px'>
+          <small>
+            {gammaPosition.balance0 ? formatNumber(gammaPosition.balance0) : 0}
+          </small>
+          <Box margin='0 0 0 6px'>
             <Badge text={`${formatNumber(token0PooledPercent)}%`} />
           </Box>
         </Box>
       </Box>
-      <Box className='flex justify-between' mt={1}>
-        <Box className='flex items-center'>
-          <Box className='flex' mr={1}>
-            <CurrencyLogo currency={gammaPosition.token1} size='24px' />
+      <Box className='flex justify-between' margin='8px 0 0'>
+        {gammaPosition.token1 && (
+          <Box className='flex items-center'>
+            <Box className='flex' margin='0 8px 0 0'>
+              <CurrencyLogo currency={gammaPosition.token1} size='24px' />
+            </Box>
+            <small>
+              {t('pooled')} {gammaPosition.token1.symbol}
+            </small>
           </Box>
-          <small>
-            {t('pooled')} {gammaPosition.token1.symbol}
-          </small>
-        </Box>
+        )}
         <Box className='flex items-center'>
-          <small>{formatNumber(gammaPosition.balance1)}</small>
-          <Box ml='6px'>
+          <small>
+            {gammaPosition.balance1 ? formatNumber(gammaPosition.balance1) : 0}
+          </small>
+          <Box margin='0 0 0 6px'>
             <Badge text={`${formatNumber(100 - token0PooledPercent)}%`} />
           </Box>
         </Box>
       </Box>
-      <Box mt={2} className='gamma-liquidity-item-buttons'>
+      <Box margin='16px 0 0' className='gamma-liquidity-item-buttons'>
         <Button
           className='gamma-liquidity-item-button'
           onClick={() => setShowAddLPModal(true)}
@@ -95,8 +113,6 @@ const GammaLPItemDetails: React.FC<{ gammaPosition: any }> = ({
         </Button>
       </Box>
     </Box>
-  ) : (
-    <></>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid } from 'theme/components';
 import { useTranslation } from 'react-i18next';
 import Motif from 'assets/images/Motif.svg';
 import BuyWithFiat from 'assets/images/featured/BuyWithFiatNoPad.png';
@@ -113,10 +113,10 @@ const LandingPage: React.FC = () => {
         {socialicons.map((val, ind) => (
           <Box
             key={ind}
-            mx={1.5}
-            className={
+            margin='0 12px'
+            className={`flex ${
               val.title.toLowerCase() === 'geckoterminal' ? 'noFill' : 'svgFill'
-            }
+            }`}
           >
             <a href={val.link} target='_blank' rel='noopener noreferrer'>
               {val.icon}
@@ -124,7 +124,7 @@ const LandingPage: React.FC = () => {
           </Box>
         ))}
       </Box>
-      <Box mt={2} width={1}>
+      <Box margin='16px 0 0' width='100%'>
         <TopMovers />
       </Box>
       <Box className='quickInfo'>
@@ -147,12 +147,12 @@ const LandingPage: React.FC = () => {
           <p>{t('seeAllPairs')}</p>
         </Box>
       </Box>
-      <Box mb='120px'>
+      <Box margin='0 0 120px'>
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item spacing={4} xs={12} sm={12} md={6}>
             <BuyFiatSection />
           </Grid>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item spacing={4} xs={12} sm={12} md={6}>
             <BuySpritzSection />
           </Grid>
         </Grid>
@@ -162,9 +162,17 @@ const LandingPage: React.FC = () => {
           <h3>{t('features')}</h3>
           <Box className='featureDivider' />
         </Box>
-        <Grid container spacing={4}>
+        <Grid className='featureGrid' container spacing={4}>
           {features.map((val, index) => (
-            <Grid item container alignItems='center' sm={12} md={6} key={index}>
+            <Grid
+              item
+              container
+              alignItems='center'
+              spacing={4}
+              sm={12}
+              md={6}
+              key={index}
+            >
               <img src={val.img} alt={val.title} />
               <Box className='featureText'>
                 <h5>{val.title}</h5>

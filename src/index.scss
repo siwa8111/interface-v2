@@ -2,14 +2,23 @@
 @use 'styles/fonts' as *;
 @use 'styles/colors' as *;
 @use 'styles/breakpoints' as *;
-@use 'styles/mui-overrides' as *;
 
 body {
   margin: 0;
+  color: $textPrimary;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  line-height: 1.43;
+  font-size: 16px;
+  box-sizing: border-box;
 
   iframe[style*="z-index: 2147483647"] {
     display: none!important;
   }
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 .loadingDots {
@@ -71,55 +80,6 @@ body {
     align-items: center;
     & > small {
       margin-right: 10px;
-    }
-  }
-}
-
-
-.buttonGroup {
-  text-align: center;
-  padding: 20px 0;
-  max-width: 1048px;
-  margin: auto;
-  width: 100%;
-  & > div {
-    width: 100%;
-  }
-  & .MuiButtonGroup-root {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-bottom: 50px;
-    & button {
-      max-width: 180px;
-      width: 50%;
-      height: 48px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: transparent;
-      border: 1px solid $primaryDark;
-      color: $textSecondary;
-      &.active {
-        background: $grey7;
-        border: 1px solid transparent;
-        color: $bgColor;
-      }
-      &:first-child {
-        border-top-left-radius: 24px;
-        border-bottom-left-radius: 24px;
-      }
-      &:last-child {
-        border-top-right-radius: 24px;
-        border-bottom-right-radius: 24px;
-      }
-    }
-  }
-  @include media("screen", "<phone") {
-    & .MuiGrid-item {
-      width: 100%;
-      margin-bottom: 32px;
-      text-align: center;
     }
   }
 }
@@ -344,5 +304,59 @@ body {
   & p, & span {
     color: $secondary1;
     font-weight: 600;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  text-align: center;
+  padding: 20px 0;
+  margin: auto;
+  width: 100%;
+  & > div {
+    width: 100%;
+  }
+  & button {
+    max-width: 180px;
+    width: 50%;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: 1px solid $primaryDark;
+    color: $textSecondary;
+    &.active {
+      background: $grey7;
+      border: 1px solid transparent;
+      color: $bgColor;
+    }
+    &:first-child {
+      border-top-left-radius: 24px;
+      border-bottom-left-radius: 24px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    &:last-child {
+      border-top-right-radius: 24px;
+      border-bottom-right-radius: 24px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+.linearProgress {
+  position: relative;
+  height: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: $yellow2;
+  & .linearProgressInner {
+    position: absolute;
+    height: 5px;
+    top: 0;
+    left: 0;
+    background: $yellow3;
   }
 }

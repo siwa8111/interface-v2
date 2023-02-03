@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from 'theme/components';
 import { useFarmingHandlers } from 'hooks/useStakerHandlers';
 import { FarmingType } from 'models/enums';
 import Loader from 'components/Loader';
@@ -24,7 +24,7 @@ export default function FarmStakeButtons({ el }: FarmCardDetailProps) {
     <>
       {!el.eternalFarming && (
         <Button
-          fullWidth
+          width='100%'
           disabled={
             selectedTokenId === el.id &&
             txType === 'withdraw' &&
@@ -41,7 +41,7 @@ export default function FarmStakeButtons({ el }: FarmCardDetailProps) {
           !txError ? (
             <>
               <Loader size={'1rem'} stroke={'var(--white)'} />
-              <Box ml='5px'>
+              <Box margin='0 0 0 5px'>
                 <small>{t('withdrawing')}</small>
               </Box>
             </>
@@ -54,65 +54,61 @@ export default function FarmStakeButtons({ el }: FarmCardDetailProps) {
       )}
       {el.eternalFarming && (
         <Box width='100%' className='flex justify-between'>
-          <Box width='49%'>
-            <Button
-              fullWidth
-              disabled={
-                (selectedTokenId === el.id &&
-                  txType === 'eternalCollectReward' &&
-                  !txConfirmed &&
-                  !txError) ||
-                (el.eternalEarned == 0 && el.eternalBonusEarned == 0)
-              }
-              onClick={() => {
-                eternalCollectRewardHandler(el.id, { ...el });
-              }}
-            >
-              {selectedTokenId === el.id &&
-              txType === 'eternalCollectReward' &&
-              !txConfirmed &&
-              !txError ? (
-                <>
-                  <Loader size={'18px'} stroke={'var(--white)'} />
-                  <Box ml='5px'>
-                    <small>{t('claiming')}</small>
-                  </Box>
-                </>
-              ) : (
-                <small>{t('claim')}</small>
-              )}
-            </Button>
-          </Box>
-          <Box width='49%'>
-            <Button
-              fullWidth
-              disabled={
-                selectedTokenId === el.id &&
-                selectedFarmingType === FarmingType.ETERNAL &&
-                txType === 'claimRewards' &&
+          <Button
+            width='49%'
+            disabled={
+              (selectedTokenId === el.id &&
+                txType === 'eternalCollectReward' &&
                 !txConfirmed &&
-                !txError
-              }
-              onClick={() => {
-                claimRewardsHandler(el.id, { ...el }, FarmingType.ETERNAL);
-              }}
-            >
-              {selectedTokenId === el.id &&
+                !txError) ||
+              (el.eternalEarned == 0 && el.eternalBonusEarned == 0)
+            }
+            onClick={() => {
+              eternalCollectRewardHandler(el.id, { ...el });
+            }}
+          >
+            {selectedTokenId === el.id &&
+            txType === 'eternalCollectReward' &&
+            !txConfirmed &&
+            !txError ? (
+              <>
+                <Loader size={'18px'} stroke={'var(--white)'} />
+                <Box margin='0 0 0 5px'>
+                  <small>{t('claiming')}</small>
+                </Box>
+              </>
+            ) : (
+              <small>{t('claim')}</small>
+            )}
+          </Button>
+          <Button
+            width='49%'
+            disabled={
+              selectedTokenId === el.id &&
               selectedFarmingType === FarmingType.ETERNAL &&
               txType === 'claimRewards' &&
               !txConfirmed &&
-              !txError ? (
-                <>
-                  <Loader size={'18px'} stroke={'var(--white)'} />
-                  <Box ml='5px'>
-                    <small>{t('undepositing')}</small>
-                  </Box>
-                </>
-              ) : (
-                <small>{t('undeposit')}</small>
-              )}
-            </Button>
-          </Box>
+              !txError
+            }
+            onClick={() => {
+              claimRewardsHandler(el.id, { ...el }, FarmingType.ETERNAL);
+            }}
+          >
+            {selectedTokenId === el.id &&
+            selectedFarmingType === FarmingType.ETERNAL &&
+            txType === 'claimRewards' &&
+            !txConfirmed &&
+            !txError ? (
+              <>
+                <Loader size={'18px'} stroke={'var(--white)'} />
+                <Box margin='0 0 0 5px'>
+                  <small>{t('undepositing')}</small>
+                </Box>
+              </>
+            ) : (
+              <small>{t('undeposit')}</small>
+            )}
+          </Button>
         </Box>
       )}
     </>

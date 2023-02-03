@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Box } from '@material-ui/core';
 import { ReactComponent as SearchIcon } from 'assets/images/SearchIcon.svg';
 import 'components/styles/SearchInput.scss';
+import { Box } from 'theme/components';
 
 interface SearchInputProps {
   placeholder: string;

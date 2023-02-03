@@ -1,14 +1,14 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { Box, useMediaQuery, useTheme } from '@material-ui/core';
-import { ArrowForwardIos } from '@material-ui/icons';
+import { Box } from 'theme/components';
+import { ChevronRight } from 'react-feather';
 import AnalyticsSearch from 'components/AnalyticsSearch';
 import { shortenAddress } from 'utils';
 import 'pages/styles/analytics.scss';
 import { useTranslation } from 'react-i18next';
-import { useIsV2 } from 'state/application/hooks';
 import AdsSlider from 'components/AdsSlider';
 import VersionToggle from 'components/Toggle/VersionToggle';
+import { useIsXS } from 'hooks/useMediaQuery';
 
 interface AnalyticHeaderProps {
   data?: any;
@@ -24,16 +24,15 @@ const AnalyticsHeader: React.FC<AnalyticHeaderProps> = ({
   const history = useHistory();
   const { pathname } = useLocation();
   const { t } = useTranslation();
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('xs'));
+  const isMobile = useIsXS();
   const params: any = useParams();
-  const version = params && params.version ? params.version : 'v3';
+  const version = params && params.version ? params.version : 'total';
 
   return (
-    <Box width='100%' mb={3}>
-      <Box mb={4} className='flex items-center'>
+    <Box width='100%' margin='0 0 24px'>
+      <Box margin='0 0 32px' className='flex items-center'>
         <h4>{t('quickswapAnalytics')}</h4>
-        <Box ml={2}>
+        <Box margin='0 0 0 16px'>
           <VersionToggle />
         </Box>
       </Box>
@@ -41,11 +40,11 @@ const AnalyticsHeader: React.FC<AnalyticHeaderProps> = ({
         <AdsSlider sort='analytics' />
       </Box>
       <Box
-        mb={4}
+        margin='0 0 32px'
         position='relative'
         className='flex justify-between flex-wrap'
       >
-        <Box marginY={1.5} className='flex items-center'>
+        <Box margin='12px 0' className='flex items-center'>
           {type && (
             <Box className='flex items-center text-hint'>
               <span
@@ -56,7 +55,7 @@ const AnalyticsHeader: React.FC<AnalyticHeaderProps> = ({
               >
                 {t('analytics')}
               </span>
-              <ArrowForwardIos style={{ width: 16 }} />
+              <ChevronRight style={{ width: 16 }} />
               <span
                 className='link'
                 onClick={() => {
@@ -65,7 +64,7 @@ const AnalyticsHeader: React.FC<AnalyticHeaderProps> = ({
               >
                 {type === 'token' ? t('tokens') : t('pairs')}
               </span>
-              <ArrowForwardIos style={{ width: 16 }} />
+              <ChevronRight style={{ width: 16 }} />
               <span>
                 {data && (
                   <span className='text-gray19'>
